@@ -1,0 +1,18 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-1.8",
+            "path": "C:\\Program Files\\Java\\jdk1.8.0_202",
+            "sources": "C:\\Program Files\\Java\\jdk1.8.0_202\\src.zip",
+            "javadoc": "https://docs.oracle.com/javase/8/docs/api/index.html",
+            "default": true,
+        },
+        {
+            "name": "JavaSE-17",
+            "path": "C:\\Program Files\\Java\\jdk-17",
+            "sources": "C:\\Program Files\\Java\\jdk-17\\src.zip",
+            "javadoc": "https://docs.oracle.com/en/java/javase/17/docs/api/",
+        },
+    ]
+}
