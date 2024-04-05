@@ -422,10 +422,10 @@ public class MyArrayList<E> implements MyList<E> {
         if (getClass() != obj.getClass())
             return false;
         @SuppressWarnings("rawtypes")
+        MyArrayList other = (MyArrayList) obj;
         if (size != other.size)
             return false;
-        MyArrayList other = (MyArrayList) obj;
-        if (!Arrays.deepEquals(elementData, other.elementData))
+        if (!Arrays.deepEquals(Arrays.copyOf(elementData, size), Arrays.copyOf(other.elementData, other.size)))
             return false;
         return true;
     }
@@ -434,9 +434,14 @@ public class MyArrayList<E> implements MyList<E> {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + Arrays.deepHashCode(elementData);
+        result = prime * result + Arrays.deepHashCode(Arrays.copyOf(elementData, size));
         result = prime * result + size;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MyArrayList [elementData=" + Arrays.toString(Arrays.copyOf(elementData, size)) + ", size=" + size + "]";
     }
 
 }

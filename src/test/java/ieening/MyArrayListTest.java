@@ -219,4 +219,56 @@ public class MyArrayListTest {
         assertThat(flag, equalTo(myArrayList.containsAll(containsArrayList)));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = { "1,1,2,3", "0,2,3,4,5,6" })
+    public void testEquals(String value) {
+        Integer[] ints = { 1, 2, 3 };
+
+        for (int i : ints) {
+            myArrayList.add(i);
+        }
+
+        MyArrayList<Integer> equalsArrayList = new MyArrayList<>();
+        int[] valueArray = Arrays.stream(value.split(",")).mapToInt(Integer::parseInt).toArray();
+        boolean flag = valueArray[0] == 1;
+        for (int i = 1; i < valueArray.length; i++) {
+            equalsArrayList.add(valueArray[i]);
+        }
+        assertThat(flag, equalTo(myArrayList.equals(equalsArrayList)));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "1,1,2,3", "0,2,3,4,5,6" })
+    public void testHashCode(String value) {
+        Integer[] ints = { 1, 2, 3 };
+
+        for (int i : ints) {
+            myArrayList.add(i);
+        }
+
+        MyArrayList<Integer> equalsArrayList = new MyArrayList<>();
+        int[] valueArray = Arrays.stream(value.split(",")).mapToInt(Integer::parseInt).toArray();
+        boolean flag = valueArray[0] == 1;
+        for (int i = 1; i < valueArray.length; i++) {
+            equalsArrayList.add(valueArray[i]);
+        }
+        assertThat(flag, equalTo(myArrayList.hashCode() == equalsArrayList.hashCode()));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "1|1|2|3|MyArrayList [elementData=[1, 2, 3], size=3]",
+            "0|2|3|4|5|6|MyArrayList [elementData=[1, 2, 3], size=3]" })
+    public void testToString(String value) {
+        MyArrayList<Integer> equalsArrayList = new MyArrayList<>();
+        String[] splitArray = value.split("\\|");
+        int[] valueArray = Arrays.stream(Arrays.copyOf(splitArray, splitArray.length - 1)).mapToInt(Integer::parseInt)
+                .toArray();
+        boolean flag = valueArray[0] == 1;
+        String result = splitArray[splitArray.length - 1];
+        for (int i = 1; i < valueArray.length; i++) {
+            equalsArrayList.add(valueArray[i]);
+        }
+        assertThat(flag, equalTo(result.equals(equalsArrayList.toString())));
+    }
+
 }

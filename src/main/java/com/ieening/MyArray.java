@@ -298,7 +298,7 @@ public class MyArray<E> implements Iterable<E> {
     // MARK:Object 方法
     @Override
     public String toString() {
-        return "MyArray [elementData=" + Arrays.toString(elementData) + ", size=" + size + "]";
+        return "MyArray [elementData=" + Arrays.toString(Arrays.copyOf(elementData, size)) + ", size=" + size + "]";
     }
 
     @Override
@@ -320,10 +320,11 @@ public class MyArray<E> implements Iterable<E> {
             return false;
         @SuppressWarnings("rawtypes")
         MyArray other = (MyArray) obj;
-        if (!Arrays.deepEquals(elementData, other.elementData))
-            return false;
         if (size != other.size)
             return false;
+        if (!Arrays.deepEquals(Arrays.copyOf(elementData, size), Arrays.copyOf(other.elementData, other.size)))
+            return false;
+
         return true;
     }
 
