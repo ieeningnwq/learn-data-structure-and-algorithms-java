@@ -2,7 +2,7 @@ package com.ieening;
 
 import java.util.Iterator;
 
-public interface MyList<E> {
+public interface MyList<E> extends Iterable<E> {
     // MARK:Query Operations
 
     /**
@@ -228,17 +228,4 @@ public interface MyList<E> {
      * @throws NullPointerException 如果待查找元素为<tt>null</tt>，且列表不支持<tt>null</tt>
      */
     int lastIndexOf(Object o);
-
-    // MARK:View
-
-    /**
-     * 返回子列表，索引在 [fromIndex, toIndex) 之间，如果 fromIndex==toIndex，返回空列表
-     *
-     * @param fromIndex 子列表较低索引值
-     * @param toIndex   子列表较高索引值
-     * @return 列表视图
-     * @throws IndexOutOfBoundsException 非法索引时（<tt>fromIndex &lt; 0 || toIndex &gt; size || fromIndex &gt; toIndex</tt>），抛出
-     *                                   <tt>IndexOutOfBoundsException</tt>
-     */
-    MyList<E> subList(int fromIndex, int toIndex);
 }
