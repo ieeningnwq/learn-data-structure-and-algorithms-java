@@ -2,7 +2,7 @@ package ieening;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -15,11 +15,11 @@ import static org.hamcrest.Matchers.hasItemInArray;
 import com.ieening.MyArray;
 
 public class MyArrayTest {
-    private static Integer[] ints = new Integer[] { 1, 2, 3, 4, 5, 6, 9, 8, 7 };
-    private static MyArray<Integer> myArray;
+    private Integer[] ints = new Integer[] { 1, 2, 3, 4, 5, 6, 9, 8, 7 };
+    private MyArray<Integer> myArray;
 
-    @BeforeAll
-    public static void setUpAll() {
+    @BeforeEach
+    public void setUpEach() {
         myArray = new MyArray<>(ints);
     }
 
