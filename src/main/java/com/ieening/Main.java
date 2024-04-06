@@ -2,6 +2,7 @@ package com.ieening;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Stack;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
@@ -15,17 +16,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        LinkedList<Integer> foo = new LinkedList();
-        foo.add(12);
-        foo.toString();
-        
-        // ArrayDeque
-        ArrayList<Integer> a = new ArrayList<>();
-        a.add(12);
-        a.equals(a);
-        a.hashCode();
-        // LinkedList
-        System.out.println(randomAccess(new int[] { 1, 2, 3, 4, 5 }));
+        // Stack
+        // ArrayList
 
         System.out.println();
         System.out.println();
