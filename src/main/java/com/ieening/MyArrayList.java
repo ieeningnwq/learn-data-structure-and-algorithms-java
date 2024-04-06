@@ -35,8 +35,6 @@ public class MyArrayList<E> implements MyList<E> {
 
     /**
      * MyArrayList 大小
-     *
-     * @serial
      */
     private int size;
 
