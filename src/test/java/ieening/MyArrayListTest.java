@@ -148,7 +148,7 @@ public class MyArrayListTest {
         for (int i : ints) {
             myArrayList.add(i);
         }
-        assertThat(ints, equalTo(myArrayList.toArray()));
+        assertThat(ints, equalTo(myArrayList.toArray(new Integer[myArrayList.size()])));
         assertThat(ints.getClass(), equalTo(myArrayList.toArray(new Integer[myArrayList.size()]).getClass()));
     }
 
