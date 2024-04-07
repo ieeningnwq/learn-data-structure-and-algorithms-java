@@ -41,7 +41,7 @@ public class MyLinkedListStack<E> implements MyStack<E> {
 
     @Override
     public boolean isEmpty() {
-        return size == 0;
+        return size == 0 && head == null;
     }
 
     @Override
@@ -105,4 +105,9 @@ public class MyLinkedListStack<E> implements MyStack<E> {
         }
     }
 
+    @Override
+    public void clear() {
+        head = null;
+        size = 0;
+    }
 }

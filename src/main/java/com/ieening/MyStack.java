@@ -38,4 +38,9 @@ public interface MyStack<E> extends Iterable<E> {
      * @throws java.util.NoSuchElementException 如果栈为空
      */
     E peek();
+
+    /**
+     * 清除所有元素
+     */
+    void clear();
 }

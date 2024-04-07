@@ -111,4 +111,21 @@ public class MyLinkedListStackTest {
         // 断言
         assertThat(ints, equalTo(iteratorArray));
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "[1]", // 添加一个
+            "[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]", // 添加多个
+    })
+    public void testClear(String parameterJsonString) {
+        JSONArray jsonArr = new JSONArray(parameterJsonString);
+        int[] ints = jsonArr.toList().stream().mapToInt(x -> (int) x).toArray();
+        for (int i : ints) {
+            myStack.push(i);
+        }
+
+        myStack.clear();
+
+        assertThat(true, equalTo(myStack.isEmpty()));
+    }
 }

@@ -101,6 +101,11 @@ public class MyResizingArrayStack<E> implements MyStack<E> {
     }
 
     @Override
+    public void clear() {
+        size = 0;
+    }
+
+    @Override
     public int size() {
         return size;
     }
