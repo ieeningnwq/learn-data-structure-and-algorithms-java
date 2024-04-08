@@ -3,29 +3,27 @@ package com.ieening;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class MyResizingArrayQueue<E> implements MyQueue<E> {
+public class MyResizingArrayDeque<E> implements MyDeque<E> {
     // MARK:Fields
 
     /**
      * 队列默认初始容量
      */
     private static final int DEFAULT_CAPACITY = 8;
-
     /**
      * 共享空队列实例
      */
     private static final Object[] EMPTY_ELEMENTDATA = {};
 
     /**
-     * 队列存储数据的数组
-     */
-    private Object[] elementData;
-
-    /**
      * 队列中元素数量
      */
     private int size;
 
+    /**
+     * 队列存储数据的数组
+     */
+    private Object[] elementData;
     /**
      * 队列中队首索引位置
      */
@@ -41,7 +39,7 @@ public class MyResizingArrayQueue<E> implements MyQueue<E> {
     /**
      * 构造一个空队列
      */
-    public MyResizingArrayQueue() {
+    public MyResizingArrayDeque() {
         elementData = new Object[DEFAULT_CAPACITY]; // 加一，因为 tail 需要占用一个空的位置
         head = tail = size = 0;
     }
@@ -51,7 +49,7 @@ public class MyResizingArrayQueue<E> implements MyQueue<E> {
      * 
      * @param initialCapacity
      */
-    public MyResizingArrayQueue(int initialCapacity) {
+    public MyResizingArrayDeque(int initialCapacity) {
         if (initialCapacity > 0) {
             elementData = new Object[initialCapacity];
             head = tail = size = 0;
@@ -63,46 +61,65 @@ public class MyResizingArrayQueue<E> implements MyQueue<E> {
         }
     }
 
-    // MARK:Queue Operations
+    // MARK:Deque Operations
 
     @Override
-    public void clear() {
-        head = tail = size = 0;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public E dequeue() {
-        checkIsEmpty();
-        E e = (E) elementData[head];
-        head = (head + 1) % (elementData.length);
-        size--;
-        return e;
+    public void enqueueFirst(E element) {
+        elementData[head = index(head - 1)] = element;
+        size++;
+        if (head == tail)
+            doubleCapacity();
     }
 
     @Override
-    public boolean enqueue(E element) {
+    public void enqueueLast(E element) {
         elementData[tail] = element;
         size++;
-        if ((tail = (tail + 1) % elementData.length) == head)
+        if ((tail = index(tail + 1)) == head)
             doubleCapacity();
-        return true;
     }
 
     private void doubleCapacity() {
         assert head == tail;
-        int p = head;
+        int h = head;
         int n = elementData.length;
-        int r = n - p; // number of elements to the right of p
+        int r = n - h;
         int newCapacity = n << 1;
-        if (newCapacity < 0) // 如果操作 int 型最大数值
+        if (newCapacity < 0) {
             throw new IllegalStateException("Sorry, deque too big");
+        }
         Object[] a = new Object[newCapacity];
-        System.arraycopy(elementData, p, a, 0, r);
-        System.arraycopy(elementData, 0, a, r, p);
+        System.arraycopy(elementData, h, a, 0, r);
+        System.arraycopy(elementData, 0, a, r, h);
         elementData = a;
         head = 0;
         tail = n;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public E dequeueFirst() {
+        checkIsEmpty();
+        E e = (E) elementData[head];
+        head = index(head + 1);
+        size--;
+        return e;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public E dequeueLast() {
+        checkIsEmpty();
+        E e = (E) elementData[tail = index(tail - 1)];
+        size--;
+        return e;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public E peekFirst() {
+        checkIsEmpty();
+        return (E) elementData[head];
     }
 
     private void checkIsEmpty() {
@@ -111,21 +128,48 @@ public class MyResizingArrayQueue<E> implements MyQueue<E> {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public E peekLast() {
+        checkIsEmpty();
+        return (E) elementData[index(tail - 1)];
+    }
+
+    private int index(int i) {
+        return (i + elementData.length) % elementData.length;
+    }
+
+    // MARK:Queue Operations
+
     @Override
     public boolean isEmpty() {
         return size == 0 && head == tail;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public E peek() {
-        checkIsEmpty();
-        return (E) elementData[head];
-    }
-
     @Override
     public int size() {
         return size;
+    }
+
+    @Override
+    public boolean enqueue(E element) {
+        enqueueLast(element);
+        return true;
+    }
+
+    @Override
+    public E dequeue() {
+        return dequeueFirst();
+    }
+
+    @Override
+    public E peek() {
+        return peekFirst();
+    }
+
+    @Override
+    public void clear() {
+        head = tail = size = 0;
     }
 
     @Override
@@ -158,6 +202,5 @@ public class MyResizingArrayQueue<E> implements MyQueue<E> {
             head = (head + 1) % elementData.length;
             return e;
         }
-
     }
 }

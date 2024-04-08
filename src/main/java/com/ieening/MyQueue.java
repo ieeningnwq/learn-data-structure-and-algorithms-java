@@ -21,7 +21,7 @@ public interface MyQueue<E> extends Iterable<E> {
      * 
      * @param item the item to add
      */
-    void enqueue(E element);
+    boolean enqueue(E element);
 
     /**
      * 元素出队

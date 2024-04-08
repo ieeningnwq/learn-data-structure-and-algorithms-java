@@ -60,7 +60,7 @@ public class MyLinkedListQueue<E> implements MyQueue<E> {
     }
 
     @Override
-    public void enqueue(E element) {
+    public boolean enqueue(E element) {
         Node<E> newNode = new Node<>(element, null);
         if (head == null) { // 如果没有元素
             head = tail = newNode;
@@ -69,6 +69,7 @@ public class MyLinkedListQueue<E> implements MyQueue<E> {
             tail = newNode;
         }
         size++;
+        return true;
     }
 
     private void checkIsEmpty() {

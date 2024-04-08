@@ -123,9 +123,7 @@ public class MyResizingArrayStackTest {
         for (int i : ints) {
             myStack.push(i);
         }
-
         myStack.clear();
-
         assertThat(true, equalTo(myStack.isEmpty()));
     }
 }
