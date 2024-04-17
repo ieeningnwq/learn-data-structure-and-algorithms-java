@@ -2,6 +2,7 @@ package com.ieening;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Stack;
 import java.util.concurrent.ThreadLocalRandom;
@@ -16,10 +17,18 @@ public class Main {
         return randomNum;
     }
 
+
+
     public static void main(String[] args) {
-        // Stack
+
+        HashMap<String,String> foo = new HashMap<String,String>();
+        foo.equals(foo);
+        // HashMap
+        
+        // String
         // ArrayList
         // ArrayDeque
+        // Double
         System.out.println();
         System.out.println();
         System.out.println();
