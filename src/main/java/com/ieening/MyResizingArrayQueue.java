@@ -14,7 +14,7 @@ public class MyResizingArrayQueue<E> implements MyQueue<E> {
     /**
      * 共享空队列实例
      */
-    private static final Object[] EMPTY_ELEMENTDATA = {};
+    private static final Object[] EMPTY_ELEMENT_DATA = {};
 
     /**
      * 队列存储数据的数组
@@ -56,7 +56,7 @@ public class MyResizingArrayQueue<E> implements MyQueue<E> {
             elementData = new Object[initialCapacity];
             head = tail = size = 0;
         } else if (initialCapacity == 0) {
-            elementData = EMPTY_ELEMENTDATA;
+            elementData = EMPTY_ELEMENT_DATA;
         } else {
             throw new IllegalArgumentException("Illegal Capacity: " +
                     initialCapacity);
