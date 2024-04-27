@@ -178,13 +178,17 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
     }
 
     private Node<K, V> getNode(Object key) {
-        @SuppressWarnings("unchecked")
-        K kKey = (K) key;
-        Node<K, V> positionNode = seekPositionNodeByKey(kKey);
-        if (positionNode != null && !(positionNode.key == key || positionNode.key.equals(key))) {
-            positionNode = null;
+        if (table != null && table.length > 0) {
+            @SuppressWarnings("unchecked")
+            K kKey = (K) key;
+            Node<K, V> positionNode = seekPositionNodeByKey(kKey);
+            if (positionNode != null && !(positionNode.key == key || positionNode.key.equals(key))) {
+                positionNode = null;
+            }
+            return positionNode;
         }
-        return positionNode;
+        return null;
+
     }
 
     private int indexOf(Object key) {
