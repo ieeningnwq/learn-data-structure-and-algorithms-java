@@ -3,6 +3,19 @@ package com.ieening;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
+
+import javax.imageio.ImageIO;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearchTree<K, V> {
     // MARK:Fields
@@ -22,11 +35,17 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
         private V value; // 存储的值
         private MyBinarySearchTree.TreeNode<K, V> left, right; // 左右子树
         private int size;
+        private int height;
 
-        MyBinarySearchTreeNode(K key, V value, int size) {
+        MyBinarySearchTreeNode(K key, V value) {
+            this(key, value, 1, 0);
+        }
+
+        MyBinarySearchTreeNode(K key, V value, int size, int height) {
             this.key = key;
             this.value = value;
             this.size = size;
+            this.height = height;
         }
 
         @Override
@@ -77,12 +96,23 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
         }
 
         @Override
+        public int getHeight() {
+            return height;
+        }
+
+        @Override
+        public void setHeight(int height) {
+            this.height = height;
+        }
+
+        @Override
         public boolean equals(Object obj) {
             if (this == obj)
                 return true;
             if (obj instanceof MyBinarySearchTree.TreeNode) {
                 MyBinarySearchTree.TreeNode<?, ?> other = (MyBinarySearchTree.TreeNode<?, ?>) obj;
-                if (size == other.getSize() && key.equals(other.getKey()) && value.equals(other.getValue())) {
+                if (size == other.getSize() && height == other.getHeight() && Objects.equals(key, other.getKey())
+                        && Objects.equals(value, other.getValue())) {
                     return true;
                 }
             }
@@ -92,7 +122,7 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
         @Override
         public int hashCode() {
             final int prime = 31;
-            int result = size;
+            int result = size * height;
             result = prime * result + ((key == null) ? 0 : key.hashCode());
             result = prime * result + ((value == null) ? 0 : value.hashCode());
             return result;
@@ -116,10 +146,23 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
     }
 
     private int size(TreeNode<K, V> treeNode) {
-        if (treeNode == null)
-            return 0;
-        else
-            return treeNode.getSize();
+        return treeNode == null ? 0 : treeNode.getSize();
+    }
+
+    @Override
+    public int height() {
+        return height(root);
+    }
+
+    /**
+     * 获取指定节点高度
+     * 
+     * @param treeNode 指定结点
+     * @return 结点高度
+     */
+    int height(TreeNode<K, V> treeNode) {
+        // 空节点高度为 -1 ，叶节点高度为 0
+        return treeNode == null ? -1 : treeNode.getHeight();
     }
 
     @Override
@@ -130,7 +173,7 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
     @Override
     public V get(K key) {
         checkKeyNotNull(key);
-        
+
         TreeNode<K, V> treeNode = get(root, key);
         return treeNode == null ? null : treeNode.getValue();
     }
@@ -286,24 +329,13 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
         if (treeNode == null)
             return 0;
         int cmp = compare(key, treeNode.getKey());
-        if (cmp < 0) {
+        if (cmp < 0)
             return rank(treeNode.getLeftChild(), key);
-        } else if (cmp > 0) {
+        else if (cmp > 0)
             return 1 + size(treeNode.getLeftChild()) + rank(treeNode.getRightChild(), key);
-        } else
+        else
             return size(treeNode.getLeftChild());
 
-    }
-
-    @Override
-    public int height() {
-        return height(root);
-    }
-
-    private int height(TreeNode<K, V> treeNode) {
-        if (treeNode == null)
-            return -1;
-        return 1 + Math.max(height(treeNode.getLeftChild()), height(treeNode.getRightChild()));
     }
 
     // MARK:Modification Operations
@@ -312,16 +344,33 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
     public void put(K key, V value) {
         checkKeyNotNull(key);
 
-        if (value == null) {
+        if (value == null)
             delete(key);
-        } else {
+        else
             root = put(root, key, value);
-        }
-
-        afterPut();
     }
 
-    void afterPut() {
+    void updateSize(TreeNode<K, V> treeNode) {
+        // size大小等于 左子树size+右子树size + 1
+        treeNode.setSize(1 + size(treeNode.getLeftChild()) + size(treeNode.getRightChild()));
+
+    }
+
+    void updateHeight(TreeNode<K, V> treeNode) {
+        // 节点高度等于最高子树高度 + 1
+        treeNode.setHeight(
+                Math.max(height(treeNode.getLeftChild()), height(treeNode.getRightChild())) + 1);
+
+    }
+
+    TreeNode<K, V> afterNodePut(TreeNode<K, V> treeNode) {
+        updateSize(treeNode);
+        updateHeight(treeNode);
+        return treeNode;
+    }
+
+    TreeNode<K, V> createTreeNode(K key, V value) {
+        return new MyBinarySearchTreeNode(key, value);
     }
 
     /**
@@ -333,9 +382,9 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
      * @return BST 根结点
      */
     private TreeNode<K, V> put(TreeNode<K, V> treeNode, K key, V value) {
-        if (treeNode == null) { // 结点为 null
-            return new MyBinarySearchTreeNode(key, value, 1);
-        }
+        if (treeNode == null)
+            return createTreeNode(key, value);
+
         int cmp = compare(key, treeNode.getKey());
         if (cmp < 0) {
             treeNode.setLeftChild(put(treeNode.getLeftChild(), key, value));
@@ -344,15 +393,14 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
         } else {
             treeNode.setValue(value);
         }
-        treeNode.setSize(1 + size(treeNode.getLeftChild()) + size(treeNode.getRightChild()));
-        return treeNode;
+
+        return afterNodePut(treeNode);
     }
 
     @Override
     public void deleteMin() {
         checkIsEmpty();
 
-        afterDelete();
         root = deleteMin(root);
     }
 
@@ -360,37 +408,38 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
         if (treeNode.getLeftChild() == null)
             return treeNode.getRightChild();
         treeNode.setLeftChild(deleteMin(treeNode.getLeftChild()));
-        treeNode.setSize(size(treeNode.getLeftChild()) + size(treeNode.getRightChild()) + 1);
 
-        return treeNode;
+        return afterNodeDelete(treeNode);
     }
 
-    private void afterDelete() {
+    TreeNode<K, V> afterNodeDelete(TreeNode<K, V> treeNode) {
+        // size大小等于 左子树size+右子树size + 1
+        treeNode.setSize(1 + size(treeNode.getLeftChild()) + size(treeNode.getRightChild()));
+        // 节点高度等于最高子树高度 + 1
+        treeNode.setHeight(
+                Math.max(height(treeNode.getLeftChild()), height(treeNode.getRightChild())) + 1);
+        return treeNode;
     }
 
     @Override
     public void deleteMax() {
         checkIsEmpty();
 
-        afterDelete();
         root = deleteMax(root);
-        ;
     }
 
     private TreeNode<K, V> deleteMax(TreeNode<K, V> treeNode) {
         if (treeNode.getRightChild() == null)
             return treeNode.getLeftChild();
         treeNode.setRightChild(deleteMax(treeNode.getRightChild()));
-        treeNode.setSize(size(treeNode.getLeftChild()) + size(treeNode.getRightChild()) + 1);
-        return treeNode;
+
+        return afterNodeDelete(treeNode);
     }
 
     @Override
     public void delete(K key) {
         checkKeyNotNull(key);
         checkIsEmpty();
-
-        afterDelete();
 
         root = delete(root, key);
     }
@@ -415,8 +464,8 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
             treeNode.setRightChild(deleteMin(node.getRightChild()));
             treeNode.setLeftChild(node.getLeftChild());
         }
-        treeNode.setSize(size(treeNode.getLeftChild()) + size(treeNode.getRightChild()) + 1);
-        return treeNode;
+
+        return afterNodeDelete(treeNode);
     }
 
     // MARK:View
@@ -579,15 +628,119 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
             return false;
         @SuppressWarnings("unchecked")
         MyBinarySearchTree<K, V> m = (MyBinarySearchTree<K, V>) obj;
-        if (m.size() != size())
+        if (m.size() != size() || m.height() != height())
             return false;
         Iterator<K> i = keys().iterator();
         while (i.hasNext()) {
             K key = i.next();
-            if (!(m.containsKey(key) && get(key).equals(m.get(key)))) {
+            if (!(m.containsKey(key) && Objects.equals(get(key), m.get(key))))
                 return false;
-            }
         }
         return true;
+    }
+
+    // MARK:Visible
+
+    public void draw(String filePath) {
+        draw(1024, 1024, filePath);
+    }
+
+    public void draw(int width, int height, String filePath) {
+        MyMap<TreeNode<K, V>, double[]> coordinatesMap = new MyHashMap<>();
+        setCoordinates(root, 0.9, coordinatesMap);
+
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = bufferedImage.createGraphics();
+        graphics.setBackground(Color.WHITE);
+        graphics.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());// 填充整个屏幕
+        graphics.setColor(Color.BLACK);
+
+        drawLines(root, coordinatesMap, graphics, bufferedImage);
+        drawNodes(root, coordinatesMap, 0.032, graphics, bufferedImage);
+
+        saveImage(filePath, bufferedImage);
+    }
+
+    private void saveImage(String filePath, BufferedImage bufferedImage) {
+        File file = new File(filePath);
+        try {
+            ImageIO.write(bufferedImage, filePath.substring(filePath.lastIndexOf('.') + 1), file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void drawNodes(TreeNode<K, V> treeNode, MyMap<TreeNode<K, V>, double[]> coordinatesMap, double nodeRadius,
+            Graphics2D graphics,
+            BufferedImage bufferedImage) {
+        if (treeNode == null) {
+            return;
+        }
+
+        drawNodes(treeNode.getLeftChild(), coordinatesMap, nodeRadius, graphics, bufferedImage);
+
+        // 计算坐标
+        double xs = coordinatesMap.get(treeNode)[0] * bufferedImage.getWidth();
+        double ys = coordinatesMap.get(treeNode)[1] * bufferedImage.getHeight();
+        double ws = 2 * nodeRadius * bufferedImage.getWidth();
+        double hs = 2 * nodeRadius * bufferedImage.getHeight();
+        // Clear the node circle area
+        graphics.setColor(Color.white);
+        graphics.fill(new Ellipse2D.Double(xs - ws / 2, ys - hs / 2, ws, hs));
+        // 绘制圆
+        graphics.setColor(Color.black);
+        graphics.draw(new Ellipse2D.Double(xs - ws / 2, ys - hs / 2, ws, hs));
+        // 绘制 key
+        graphics.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        FontMetrics fontMetrics = graphics.getFontMetrics();
+        ws = fontMetrics.stringWidth(String.valueOf(treeNode.getKey()));
+        hs = fontMetrics.getDescent();
+        graphics.drawString(String.valueOf(treeNode.getKey()), (float) (xs - ws / 2.0), (float) (ys + hs));
+
+        drawNodes(treeNode.getRightChild(), coordinatesMap, nodeRadius, graphics, bufferedImage);
+    }
+
+    /**
+     * 计算各个结点坐标
+     * 
+     * @param treeNode       树的根结点
+     * @param distance       在画布上，纵轴上的百分比位置，比如：0.9，就是从上往下，距离上边界 0.1
+     * @param coordinatesMap 保存结点坐标信息
+     */
+    private void setCoordinates(TreeNode<K, V> treeNode, double distance,
+            MyMap<TreeNode<K, V>, double[]> coordinatesMap) {
+        if (treeNode == null)
+            return;
+
+        setCoordinates(treeNode.getLeftChild(), distance - 0.05, coordinatesMap);
+        double[] coordinates = coordinatesMap.getOrDefault(treeNode, new double[2]);
+        coordinates[0] = (0.5 + coordinatesMap.size()) / size();
+        coordinates[1] = 1 - (distance - 0.05);
+        coordinatesMap.put(treeNode, coordinates);
+        setCoordinates(treeNode.getRightChild(), distance - 0.05, coordinatesMap);
+    }
+
+    private void drawLines(TreeNode<K, V> treeNode, MyMap<TreeNode<K, V>, double[]> coordinatesMap, Graphics2D graphics,
+            BufferedImage bufferedImage) {
+        if (treeNode == null) {
+            return;
+        }
+
+        drawLines(treeNode.getLeftChild(), coordinatesMap, graphics, bufferedImage);
+
+        if (treeNode.getLeftChild() != null) {
+            graphics.draw(new Line2D.Double(bufferedImage.getWidth() * coordinatesMap.get(treeNode)[0],
+                    bufferedImage.getHeight() * coordinatesMap.get(treeNode)[1],
+                    bufferedImage.getWidth() * coordinatesMap.get(treeNode.getLeftChild())[0],
+                    bufferedImage.getHeight() * coordinatesMap.get(treeNode.getLeftChild())[1]));
+        }
+        if (treeNode.getRightChild() != null) {
+            graphics.draw(new Line2D.Double(bufferedImage.getWidth() * coordinatesMap.get(treeNode)[0],
+                    bufferedImage.getHeight() * coordinatesMap.get(treeNode)[1],
+                    bufferedImage.getWidth() * coordinatesMap.get(treeNode.getRightChild())[0],
+                    bufferedImage.getHeight() * coordinatesMap.get(treeNode.getRightChild())[1]));
+        }
+
+        drawLines(treeNode.getRightChild(), coordinatesMap, graphics, bufferedImage);
     }
 }

@@ -26,7 +26,7 @@ public class MyArrayList<E> implements MyList<E> {
     /**
      * 对于默认长度的空列表使用的空列表实例，在第一次添加元素时会扩张
      */
-    private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
+    private static final Object[] DEFAULT_CAPACITY_EMPTY_ELEMENT_DATA = {};
 
     /**
      * 列表存储数据的数组
@@ -66,7 +66,7 @@ public class MyArrayList<E> implements MyList<E> {
      * Constructs an empty list with an initial capacity of ten.
      */
     public MyArrayList() {
-        this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+        this.elementData = DEFAULT_CAPACITY_EMPTY_ELEMENT_DATA;
     }
 
     /**
@@ -216,7 +216,7 @@ public class MyArrayList<E> implements MyList<E> {
     }
 
     private int calculateCapacity(Object[] elementData, int minCapacity) {
-        if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
+        if (elementData == DEFAULT_CAPACITY_EMPTY_ELEMENT_DATA) {
             return Math.max(DEFAULT_CAPACITY, minCapacity);
         }
         return minCapacity;

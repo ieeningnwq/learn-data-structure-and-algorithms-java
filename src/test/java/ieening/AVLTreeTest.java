@@ -13,16 +13,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import com.ieening.AVLTree;
 import com.ieening.AbstractMyBinarySearchTree;
 import com.ieening.MyBinarySearchTree;
 
-public class AbstractMyBinarySearchTreeTest {
-    private MyBinarySearchTree<Integer, Integer> myBinarySearchTree;
+public class AVLTreeTest {
+    private AVLTree<Integer, Integer> myBinarySearchTree;
 
     @BeforeEach
     public void setUpEach() {
-        myBinarySearchTree = new AbstractMyBinarySearchTree<Integer, Integer>() {
-        };
+        myBinarySearchTree = new AVLTree<>();
     }
 
     @ParameterizedTest
@@ -188,7 +188,7 @@ public class AbstractMyBinarySearchTreeTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":5}",
+            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":3}",
     })
     public void testHeight(String parameterJsonString) {
         JSONObject jObject = new JSONObject(parameterJsonString);
@@ -263,8 +263,8 @@ public class AbstractMyBinarySearchTreeTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":[11, 1, 100, 4, 67, 5, 87, 8, 10]}",
-            "{\"bst\":{897:4,2839:8,192:10,12:5,56:1,6788:100,444:87,23232:67,90000:11},\"expected\":[90000, 12, 56, 444, 192, 897, 6788, 2839, 23232]}",
+            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":[11, 4, 87, 1, 8, 67, 100, 5, 10]}",
+            "{\"bst\":{897:4,2839:8,192:10,12:5,56:1,6788:100,444:87,23232:67,90000:11},\"expected\":[897, 56, 23232, 12, 444, 6788, 90000, 192, 2839]}",
     })
     public void testLevelOrder(String parameterJsonString) {
         JSONObject jObject = new JSONObject(parameterJsonString);
@@ -283,8 +283,8 @@ public class AbstractMyBinarySearchTreeTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":[11, 1, 4, 5, 8, 10, 100, 67, 87]}",
-            "{\"bst\":{897:4,2839:8,192:10,12:5,56:1,6788:100,444:87,23232:67,90000:11},\"expected\":[90000, 12, 56, 444, 192, 897, 6788, 2839, 23232]}",
+            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":[11, 4, 1, 8, 5, 10, 87, 67, 100]}",
+            "{\"bst\":{897:4,2839:8,192:10,12:5,56:1,6788:100,444:87,23232:67,90000:11},\"expected\":[897, 56, 12, 444, 192, 23232, 6788, 2839, 90000]}",
     })
     public void testPreOrder(String parameterJsonString) {
         JSONObject jObject = new JSONObject(parameterJsonString);
@@ -304,6 +304,7 @@ public class AbstractMyBinarySearchTreeTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":[1, 4, 5, 8, 10, 11, 67, 87, 100]}",
+            "{\"bst\":{897:4,2839:8,192:10,12:5,56:1,6788:100,444:87,23232:67,90000:11},\"expected\":[12, 56, 192, 444, 897, 2839, 6788, 23232, 90000]}",
     })
     public void testMiddleOrder(String parameterJsonString) {
         JSONObject jObject = new JSONObject(parameterJsonString);
@@ -322,7 +323,8 @@ public class AbstractMyBinarySearchTreeTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":[10, 8, 5, 4, 1, 87, 67, 100, 11]}",
+            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":[1, 5, 10, 8, 4, 67, 100, 87, 11]}",
+            "{\"bst\":{897:4,2839:8,192:10,12:5,56:1,6788:100,444:87,23232:67,90000:11},\"expected\":[12, 192, 444, 56, 2839, 6788, 90000,23232,897]}",
     })
     public void testPostOrder(String parameterJsonString) {
         JSONObject jObject = new JSONObject(parameterJsonString);
@@ -345,8 +347,7 @@ public class AbstractMyBinarySearchTreeTest {
             "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11}}"
     })
     public void testComparisonAndHashing(String parameterJsonString) {
-        MyBinarySearchTree<Integer, Integer> equalBST = new AbstractMyBinarySearchTree<Integer, Integer>() {
-        };
+        MyBinarySearchTree<Integer, Integer> equalBST = new AVLTree<>();
 
         JSONObject jObject = new JSONObject(parameterJsonString);
         for (String key : jObject.getJSONObject("bst").keySet()) {
@@ -367,14 +368,15 @@ public class AbstractMyBinarySearchTreeTest {
     @SuppressWarnings("rawtypes")
     @ParameterizedTest
     @ValueSource(strings = {
-            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11}}"
+            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"fileName\":\"first.jpg\"}",
+            "{\"bst\":{897:4,2839:8,192:10,12:5,56:1,6788:100,444:87,23232:67,90000:11},\"fileName\":\"second.jpg\"}"
     })
     public void testDraw(String parameterJsonString) {
         JSONObject jObject = new JSONObject(parameterJsonString);
         for (String key : jObject.getJSONObject("bst").keySet()) {
             myBinarySearchTree.put(Integer.parseInt(key), jObject.getJSONObject("bst").getInt(key));
         }
-
-        ((AbstractMyBinarySearchTree) myBinarySearchTree).draw("src\\test\\java\\ieening\\output\\bst.png");
+        String filePath = "src\\test\\java\\ieening\\output\\" + jObject.getString("fileName");
+        ((AbstractMyBinarySearchTree) myBinarySearchTree).draw(filePath);
     }
 }

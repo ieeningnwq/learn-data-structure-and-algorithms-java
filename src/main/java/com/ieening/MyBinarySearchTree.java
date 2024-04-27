@@ -70,6 +70,18 @@ public interface MyBinarySearchTree<K, V> {
         void setSize(int size);
 
         /**
+         * 以当前结点为根，树的深度
+         * 
+         * @return 树深度
+         */
+        int getHeight();
+
+        /**
+         * 设置以当前结点为树的深度
+         */
+        void setHeight(int height);
+
+        /**
          * 树结点 {@code equals} 方法
          *
          * @param o 待比较的另一个树结点对象
