@@ -13,8 +13,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.ieening.MyDeque;
-import com.ieening.MyLinkedListDeque;
+import com.ieening.datastructure.MyDeque;
+import com.ieening.datastructure.MyLinkedListDeque;
 
 public class MyLinkedListDequeTest {
     private MyDeque<Integer> myDeque;

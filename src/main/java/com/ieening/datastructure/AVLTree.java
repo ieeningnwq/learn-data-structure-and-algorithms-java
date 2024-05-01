@@ -1,4 +1,4 @@
-package com.ieening;
+package com.ieening.datastructure;
 
 public class AVLTree<K, V> extends AbstractMyBinarySearchTree<K, V> {
 

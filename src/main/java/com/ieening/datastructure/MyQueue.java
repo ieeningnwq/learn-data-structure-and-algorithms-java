@@ -1,4 +1,4 @@
-package com.ieening;
+package com.ieening.datastructure;
 
 public interface MyQueue<E> extends Iterable<E> {
 

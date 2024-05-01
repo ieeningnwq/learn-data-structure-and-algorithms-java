@@ -13,8 +13,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.ieening.AbstractMyBinarySearchTree;
-import com.ieening.MyBinarySearchTree;
+import com.ieening.datastructure.AbstractMyBinarySearchTree;
+import com.ieening.datastructure.MyBinarySearchTree;
 
 public class AbstractMyBinarySearchTreeTest {
     private MyBinarySearchTree<Integer, Integer> myBinarySearchTree;

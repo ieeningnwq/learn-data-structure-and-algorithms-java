@@ -1,4 +1,4 @@
-package com.ieening;
+package com.ieening.datastructure;
 
 public interface MyDeque<E> extends MyQueue<E> {
     /**

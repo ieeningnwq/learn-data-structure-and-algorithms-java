@@ -1,4 +1,4 @@
-package com.ieening;
+package com.ieening.datastructure;
 
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;

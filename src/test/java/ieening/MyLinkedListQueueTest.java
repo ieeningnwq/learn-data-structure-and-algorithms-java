@@ -12,8 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.ieening.MyLinkedListQueue;
-import com.ieening.MyQueue;
+import com.ieening.datastructure.MyLinkedListQueue;
+import com.ieening.datastructure.MyQueue;
 
 public class MyLinkedListQueueTest {
     private MyQueue<Integer> myQueue;

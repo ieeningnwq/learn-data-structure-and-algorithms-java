@@ -13,7 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.ieening.MyArrayList;
+import com.ieening.datastructure.MyArrayList;
 
 public class MyArrayListTest {
     private MyArrayList<Integer> myArrayList;

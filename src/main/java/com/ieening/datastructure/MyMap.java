@@ -1,4 +1,4 @@
-package com.ieening;
+package com.ieening.datastructure;
 
 public interface MyMap<K, V> {
     // MARK:Query Operations

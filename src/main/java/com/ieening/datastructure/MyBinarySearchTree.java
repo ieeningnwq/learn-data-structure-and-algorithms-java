@@ -1,4 +1,4 @@
-package com.ieening;
+package com.ieening.datastructure;
 
 public interface MyBinarySearchTree<K, V> {
     // MARK:Tree Node Interface

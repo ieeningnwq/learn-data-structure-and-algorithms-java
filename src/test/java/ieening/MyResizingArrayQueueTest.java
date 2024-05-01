@@ -12,8 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.ieening.MyQueue;
-import com.ieening.MyResizingArrayQueue;
+import com.ieening.datastructure.MyQueue;
+import com.ieening.datastructure.MyResizingArrayQueue;
 
 public class MyResizingArrayQueueTest {
     private MyQueue<Integer> myQueue;

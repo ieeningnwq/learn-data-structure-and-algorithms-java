@@ -5,14 +5,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import com.ieening.datastructure.MyHashMap;
+import com.ieening.datastructure.MyMap;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.Arrays;
 import java.util.Set;
-
-import com.ieening.MyHashMap;
-import com.ieening.MyMap;
 
 public class MyHashMapTest {
     private MyMap<String, String> myMap;

@@ -7,12 +7,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import com.ieening.datastructure.MyArray;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItemInArray;
-
-import com.ieening.MyArray;
 
 public class MyArrayTest {
     private Integer[] ints = new Integer[] { 1, 2, 3, 4, 5, 6, 9, 8, 7 };

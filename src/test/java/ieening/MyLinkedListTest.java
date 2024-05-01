@@ -15,8 +15,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.ieening.MyArrayList;
-import com.ieening.MyLinkedList;
+import com.ieening.datastructure.MyArrayList;
+import com.ieening.datastructure.MyLinkedList;
 
 public class MyLinkedListTest {
     private MyLinkedList<Integer> myLinkedList;
