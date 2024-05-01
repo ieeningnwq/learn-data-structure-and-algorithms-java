@@ -25,6 +25,10 @@ public class RedBlackBST<K, V> extends AbstractMyBinarySearchTree<K, V> {
             this.color = color;
         }
 
+        RedBlackTreeNode(K key, V value) {
+            this(key, value, 1, 0, RED);
+        }
+
         RedBlackTreeNode(K key, V value, int size, int height, boolean color) {
             super(key, value, size, height);
             this.color = color;

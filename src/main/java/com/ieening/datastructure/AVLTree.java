@@ -106,8 +106,7 @@ public class AVLTree<K, V> extends AbstractMyBinarySearchTree<K, V> {
 
     @Override
     TreeNode<K, V> afterNodeDelete(TreeNode<K, V> treeNode) {
-        super.afterNodeDelete(treeNode);
-        updateHeight(treeNode);
+        treeNode = super.afterNodeDelete(treeNode);
         return rotate(treeNode);
     }
 

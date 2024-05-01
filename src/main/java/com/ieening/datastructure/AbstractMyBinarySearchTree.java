@@ -414,10 +414,10 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
 
     TreeNode<K, V> afterNodeDelete(TreeNode<K, V> treeNode) {
         // size大小等于 左子树size+右子树size + 1
-        treeNode.setSize(1 + size(treeNode.getLeftChild()) + size(treeNode.getRightChild()));
+        updateSize(treeNode);
         // 节点高度等于最高子树高度 + 1
-        treeNode.setHeight(
-                Math.max(height(treeNode.getLeftChild()), height(treeNode.getRightChild())) + 1);
+        updateHeight(treeNode);
+
         return treeNode;
     }
 
