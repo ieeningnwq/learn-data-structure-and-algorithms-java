@@ -1,4 +1,4 @@
-package ieening;
+package ieening.datastructure;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

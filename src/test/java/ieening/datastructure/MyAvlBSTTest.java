@@ -1,4 +1,4 @@
-package ieening;
+package ieening.datastructure;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -13,16 +13,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.ieening.datastructure.AVLTree;
-import com.ieening.datastructure.AbstractMyBinarySearchTree;
+import com.ieening.datastructure.MyAvlBST;
+import com.ieening.datastructure.MyLinkedBST;
 import com.ieening.datastructure.MyBinarySearchTree;
 
-public class AVLTreeTest {
-    private AVLTree<Integer, Integer> myBinarySearchTree;
+public class MyAvlBSTTest {
+    private MyAvlBST<Integer, Integer> myBinarySearchTree;
 
     @BeforeEach
     public void setUpEach() {
-        myBinarySearchTree = new AVLTree<>();
+        myBinarySearchTree = new MyAvlBST<>();
     }
 
     @ParameterizedTest
@@ -347,7 +347,7 @@ public class AVLTreeTest {
             "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11}}"
     })
     public void testComparisonAndHashing(String parameterJsonString) {
-        MyBinarySearchTree<Integer, Integer> equalBST = new AVLTree<>();
+        MyBinarySearchTree<Integer, Integer> equalBST = new MyAvlBST<>();
 
         JSONObject jObject = new JSONObject(parameterJsonString);
         for (String key : jObject.getJSONObject("bst").keySet()) {
@@ -358,25 +358,26 @@ public class AVLTreeTest {
         assertThat(myBinarySearchTree, equalTo(equalBST));
         assertThat(myBinarySearchTree.hashCode(), equalTo(equalBST.hashCode()));
 
-        MyBinarySearchTree<Integer, Integer> differentBST = new AbstractMyBinarySearchTree<Integer, Integer>() {
+        MyBinarySearchTree<Integer, Integer> differentBST = new MyLinkedBST<Integer, Integer>() {
         };
         differentBST.put(-1, -1);
         assertThat(false, equalTo(myBinarySearchTree.equals(differentBST)));
         assertThat(false, equalTo(myBinarySearchTree.hashCode() == differentBST.hashCode()));
     }
 
-    @SuppressWarnings("rawtypes")
     @ParameterizedTest
     @ValueSource(strings = {
-            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"fileName\":\"first.jpg\"}",
-            "{\"bst\":{897:4,2839:8,192:10,12:5,56:1,6788:100,444:87,23232:67,90000:11},\"fileName\":\"second.jpg\"}"
+            "{\"bst\":['S','E','A','R','C','H','X','M','P','L'],\"file\":\"normal_order\"}",
+            "{\"bst\":['A','C','E','H','L','M','P','R','S','X'],\"file\":\"ascend_order\"}"
     })
     public void testDraw(String parameterJsonString) {
+        MyAvlBST<Character, Integer> bst = new MyAvlBST<>();
+
         JSONObject jObject = new JSONObject(parameterJsonString);
-        for (String key : jObject.getJSONObject("bst").keySet()) {
-            myBinarySearchTree.put(Integer.parseInt(key), jObject.getJSONObject("bst").getInt(key));
+        for (Object key : jObject.getJSONArray("bst").toList()) {
+            bst.put(((String) key).charAt(0), (int) (((String) key).charAt(0)));
         }
-        String filePath = "src\\test\\java\\ieening\\output\\" + jObject.getString("fileName");
-        ((AbstractMyBinarySearchTree) myBinarySearchTree).draw(filePath);
+
+        bst.draw("src\\test\\java\\ieening\\output\\avl_bst_" + jObject.getString("file") + ".png");
     }
 }

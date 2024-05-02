@@ -17,7 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearchTree<K, V> {
+public class MyLinkedBST<K, V> implements MyBinarySearchTree<K, V> {
     // MARK:Fields
 
     /**
@@ -131,11 +131,11 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
     }
 
     // MARK:Constructors
-    public AbstractMyBinarySearchTree() {
+    public MyLinkedBST() {
         this(null);
     }
 
-    public AbstractMyBinarySearchTree(Comparator<? super K> comparator) {
+    public MyLinkedBST(Comparator<? super K> comparator) {
         this.comparator = comparator;
     }
 
@@ -190,7 +190,7 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
             return treeNode;
     }
 
-    private void checkKeyNotNull(K key) {
+    void checkKeyNotNull(K key) {
         if (key == null)
             throw new IllegalArgumentException("prohibit to operate with a null key");
     }
@@ -381,7 +381,7 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
      * @param value    值
      * @return BST 根结点
      */
-    private TreeNode<K, V> put(TreeNode<K, V> treeNode, K key, V value) {
+    TreeNode<K, V> put(TreeNode<K, V> treeNode, K key, V value) {
         if (treeNode == null)
             return createTreeNode(key, value);
 
@@ -661,7 +661,7 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
         saveImage(filePath, bufferedImage);
     }
 
-    private void saveImage(String filePath, BufferedImage bufferedImage) {
+    void saveImage(String filePath, BufferedImage bufferedImage) {
         File file = new File(filePath);
         try {
             ImageIO.write(bufferedImage, filePath.substring(filePath.lastIndexOf('.') + 1), file);
@@ -670,7 +670,7 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
         }
     }
 
-    private void drawNodes(TreeNode<K, V> treeNode, MyMap<TreeNode<K, V>, double[]> coordinatesMap, double nodeRadius,
+    void drawNodes(TreeNode<K, V> treeNode, MyMap<TreeNode<K, V>, double[]> coordinatesMap, double nodeRadius,
             Graphics2D graphics,
             BufferedImage bufferedImage) {
         if (treeNode == null) {
@@ -707,7 +707,7 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
      * @param distance       在画布上，纵轴上的百分比位置，比如：0.9，就是从上往下，距离上边界 0.1
      * @param coordinatesMap 保存结点坐标信息
      */
-    private void setCoordinates(TreeNode<K, V> treeNode, double distance,
+    void setCoordinates(TreeNode<K, V> treeNode, double distance,
             MyMap<TreeNode<K, V>, double[]> coordinatesMap) {
         if (treeNode == null)
             return;
@@ -720,7 +720,7 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
         setCoordinates(treeNode.getRightChild(), distance - 0.05, coordinatesMap);
     }
 
-    private void drawLines(TreeNode<K, V> treeNode, MyMap<TreeNode<K, V>, double[]> coordinatesMap, Graphics2D graphics,
+    void drawLines(TreeNode<K, V> treeNode, MyMap<TreeNode<K, V>, double[]> coordinatesMap, Graphics2D graphics,
             BufferedImage bufferedImage) {
         if (treeNode == null) {
             return;
@@ -740,7 +740,6 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
                     bufferedImage.getWidth() * coordinatesMap.get(treeNode.getRightChild())[0],
                     bufferedImage.getHeight() * coordinatesMap.get(treeNode.getRightChild())[1]));
         }
-
         drawLines(treeNode.getRightChild(), coordinatesMap, graphics, bufferedImage);
     }
 }

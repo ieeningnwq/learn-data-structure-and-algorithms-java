@@ -1,4 +1,4 @@
-package ieening;
+package ieening.datastructure;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -13,16 +13,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.ieening.datastructure.AbstractMyBinarySearchTree;
+import com.ieening.datastructure.MyLinkedBST;
 import com.ieening.datastructure.MyBinarySearchTree;
 
-public class AbstractMyBinarySearchTreeTest {
+public class MyLinkedBSTTest {
     private MyBinarySearchTree<Integer, Integer> myBinarySearchTree;
 
     @BeforeEach
     public void setUpEach() {
-        myBinarySearchTree = new AbstractMyBinarySearchTree<Integer, Integer>() {
-        };
+        myBinarySearchTree = new MyLinkedBST<Integer, Integer>();
     }
 
     @ParameterizedTest
@@ -61,7 +60,6 @@ public class AbstractMyBinarySearchTreeTest {
                     myBinarySearchTree.ceiling(Integer.parseInt(key));
                 });
             }
-
         }
     }
 
@@ -83,7 +81,6 @@ public class AbstractMyBinarySearchTreeTest {
                     myBinarySearchTree.floor(Integer.parseInt(key));
                 });
             }
-
         }
     }
 
@@ -345,7 +342,7 @@ public class AbstractMyBinarySearchTreeTest {
             "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11}}"
     })
     public void testComparisonAndHashing(String parameterJsonString) {
-        MyBinarySearchTree<Integer, Integer> equalBST = new AbstractMyBinarySearchTree<Integer, Integer>() {
+        MyBinarySearchTree<Integer, Integer> equalBST = new MyLinkedBST<Integer, Integer>() {
         };
 
         JSONObject jObject = new JSONObject(parameterJsonString);
@@ -357,24 +354,26 @@ public class AbstractMyBinarySearchTreeTest {
         assertThat(myBinarySearchTree, equalTo(equalBST));
         assertThat(myBinarySearchTree.hashCode(), equalTo(equalBST.hashCode()));
 
-        MyBinarySearchTree<Integer, Integer> differentBST = new AbstractMyBinarySearchTree<Integer, Integer>() {
+        MyBinarySearchTree<Integer, Integer> differentBST = new MyLinkedBST<Integer, Integer>() {
         };
         differentBST.put(-1, -1);
         assertThat(false, equalTo(myBinarySearchTree.equals(differentBST)));
         assertThat(false, equalTo(myBinarySearchTree.hashCode() == differentBST.hashCode()));
     }
 
-    @SuppressWarnings("rawtypes")
     @ParameterizedTest
     @ValueSource(strings = {
-            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11}}"
+            "{\"bst\":['S','E','A','R','C','H','X','M','P','L'],\"file\":\"normal_order\"}",
+            "{\"bst\":['A','C','E','H','L','M','P','R','S','X'],\"file\":\"ascend_order\"}"
     })
     public void testDraw(String parameterJsonString) {
+        MyLinkedBST<Character, Integer> bst = new MyLinkedBST<>();
+
         JSONObject jObject = new JSONObject(parameterJsonString);
-        for (String key : jObject.getJSONObject("bst").keySet()) {
-            myBinarySearchTree.put(Integer.parseInt(key), jObject.getJSONObject("bst").getInt(key));
+        for (Object key : jObject.getJSONArray("bst").toList()) {
+            bst.put(((String) key).charAt(0), (int) (((String) key).charAt(0)));
         }
 
-        ((AbstractMyBinarySearchTree) myBinarySearchTree).draw("src\\test\\java\\ieening\\output\\bst.png");
+        bst.draw("src\\test\\java\\ieening\\output\\linked_bst_" + jObject.getString("file") + ".png");
     }
 }

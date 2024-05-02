@@ -1,6 +1,6 @@
 package com.ieening.datastructure;
 
-public class AVLTree<K, V> extends AbstractMyBinarySearchTree<K, V> {
+public class MyAvlBST<K, V> extends MyLinkedBST<K, V> {
 
     /**
      * 获取结点平衡因子

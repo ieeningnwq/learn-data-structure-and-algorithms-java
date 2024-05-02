@@ -1,4 +1,4 @@
-package ieening;
+package ieening.datastructure;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;

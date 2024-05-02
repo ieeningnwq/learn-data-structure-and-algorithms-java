@@ -1,4 +1,4 @@
-package ieening;
+package ieening.datastructure;
 
 public class MyHashSetTest {
 

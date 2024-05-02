@@ -1,4 +1,4 @@
-package ieening;
+package ieening.datastructure;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -14,14 +14,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.ieening.datastructure.MyDeque;
-import com.ieening.datastructure.MyResizingArrayDeque;
+import com.ieening.datastructure.MyLinkedListDeque;
 
-public class MyResizingArrayDequeTest {
+public class MyLinkedListDequeTest {
     private MyDeque<Integer> myDeque;
 
     @BeforeEach
     public void setUpEach() {
-        myDeque = new MyResizingArrayDeque<>();
+        myDeque = new MyLinkedListDeque<>();
     }
 
     // MARK:Deque Test
