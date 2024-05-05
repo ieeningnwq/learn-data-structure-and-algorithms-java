@@ -134,7 +134,7 @@ public class MyRedBlackBSTTest {
     @ValueSource(strings = {
             "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67},\"asserts\":{8:true,6:false,null:\"Exception\"}}", // 正常
     })
-    public void testContainsKey(String parameterJsonString) {
+    public void testContains(String parameterJsonString) {
         JSONObject jObject = new JSONObject(parameterJsonString);
         for (String key : jObject.getJSONObject("bst").keySet()) {
             myBinarySearchTree.put(Integer.parseInt(key), jObject.getJSONObject("bst").getInt(key));
@@ -142,10 +142,10 @@ public class MyRedBlackBSTTest {
         for (String key : jObject.getJSONObject("asserts").keySet()) {
             try {
                 boolean expected = jObject.getJSONObject("asserts").getBoolean(key);
-                assertThat(expected, equalTo(myBinarySearchTree.containsKey(Integer.parseInt(key))));
+                assertThat(expected, equalTo(myBinarySearchTree.contains(Integer.parseInt(key))));
             } catch (JSONException e) {
                 assertThrows(IllegalArgumentException.class, () -> {
-                    myBinarySearchTree.containsKey(Integer.parseInt(key));
+                    myBinarySearchTree.contains(Integer.parseInt(key));
                 });
             }
         }
@@ -203,11 +203,14 @@ public class MyRedBlackBSTTest {
     @ValueSource(strings = {
             "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":4}",
             "{\"bst\":{897:4,2839:8,192:10,12:5,56:1,6788:100,444:87,23232:67,90000:11},\"expected\":56}",
+            "{\"bst\":{1:1,3:3,5:5,8:8,12:12,13:13,16:16},\"expected\":3}}",
+            "{\"bst\":{1:1,3:3,5:5,8:8,12:12,13:13,16:16,18:18,19:19,24:24},\"expected\":3}}"
     })
     public void testDeleteMin(String parameterJsonString) {
         JSONObject jObject = new JSONObject(parameterJsonString);
-        for (String key : jObject.getJSONObject("bst").keySet()) {
-            myBinarySearchTree.put(Integer.parseInt(key), jObject.getJSONObject("bst").getInt(key));
+        for (Integer key : jObject.getJSONObject("bst").keySet().stream().mapToInt(Integer::parseInt).sorted()
+                .toArray()) {
+            myBinarySearchTree.put(key, jObject.getJSONObject("bst").getInt(String.valueOf(key)));
         }
         myBinarySearchTree.deleteMin();
         assertThat(jObject.getInt("expected"), equalTo(myBinarySearchTree.min()));
@@ -217,6 +220,7 @@ public class MyRedBlackBSTTest {
     @ValueSource(strings = {
             "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":87}",
             "{\"bst\":{897:4,2839:8,192:10,12:5,56:1,6788:100,444:87,23232:67,90000:11},\"expected\":23232}",
+            "{\"bst\":{24:24,19:19,18:18,16:16,13:13,12:12,8:8,5:5,3:3,1:1},\"expected\":19}}",
     })
     public void testDeleteMax(String parameterJsonString) {
         JSONObject jObject = new JSONObject(parameterJsonString);
@@ -238,9 +242,9 @@ public class MyRedBlackBSTTest {
             myBinarySearchTree.put(Integer.parseInt(key), jObject.getJSONObject("bst").getInt(key));
         }
         int deleteKey = jObject.getInt("delete");
-        assertThat(true, equalTo(myBinarySearchTree.containsKey(deleteKey)));
+        assertThat(true, equalTo(myBinarySearchTree.contains(deleteKey)));
         myBinarySearchTree.delete(deleteKey);
-        assertThat(false, equalTo(myBinarySearchTree.containsKey(deleteKey)));
+        assertThat(false, equalTo(myBinarySearchTree.contains(deleteKey)));
     }
 
     @ParameterizedTest
@@ -264,8 +268,8 @@ public class MyRedBlackBSTTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":[11, 1, 100, 4, 67, 5, 87, 8, 10]}",
-            "{\"bst\":{897:4,2839:8,192:10,12:5,56:1,6788:100,444:87,23232:67,90000:11},\"expected\":[90000, 12, 56, 444, 192, 897, 6788, 2839, 23232]}",
+            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":[8, 4, 87, 1, 5, 11, 100, 10, 67]}",
+            "{\"bst\":{897:4,2839:8,192:10,12:5,56:1,6788:100,444:87,23232:67,90000:11},\"expected\":[897, 56, 23232, 12, 444, 6788, 90000, 192, 2839]}",
     })
     public void testLevelOrder(String parameterJsonString) {
         JSONObject jObject = new JSONObject(parameterJsonString);
@@ -284,8 +288,8 @@ public class MyRedBlackBSTTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":[11, 1, 4, 5, 8, 10, 100, 67, 87]}",
-            "{\"bst\":{897:4,2839:8,192:10,12:5,56:1,6788:100,444:87,23232:67,90000:11},\"expected\":[90000, 12, 56, 444, 192, 897, 6788, 2839, 23232]}",
+            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":[8,4,1,5,87,11,10,67,100]}",
+            "{\"bst\":{897:4,2839:8,192:10,12:5,56:1,6788:100,444:87,23232:67,90000:11},\"expected\":[897,56,12,444,192,23232,6788,2839,90000]}",
     })
     public void testPreOrder(String parameterJsonString) {
         JSONObject jObject = new JSONObject(parameterJsonString);
@@ -323,7 +327,7 @@ public class MyRedBlackBSTTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":[10, 8, 5, 4, 1, 87, 67, 100, 11]}",
+            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":[1,5,4,10,67,11,100,87,8]}",
     })
     public void testPostOrder(String parameterJsonString) {
         JSONObject jObject = new JSONObject(parameterJsonString);

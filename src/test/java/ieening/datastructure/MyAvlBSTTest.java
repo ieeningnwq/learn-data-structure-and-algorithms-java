@@ -133,7 +133,7 @@ public class MyAvlBSTTest {
     @ValueSource(strings = {
             "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67},\"asserts\":{8:true,6:false,null:\"Exception\"}}", // 正常
     })
-    public void testContainsKey(String parameterJsonString) {
+    public void testContains(String parameterJsonString) {
         JSONObject jObject = new JSONObject(parameterJsonString);
         for (String key : jObject.getJSONObject("bst").keySet()) {
             myBinarySearchTree.put(Integer.parseInt(key), jObject.getJSONObject("bst").getInt(key));
@@ -141,10 +141,10 @@ public class MyAvlBSTTest {
         for (String key : jObject.getJSONObject("asserts").keySet()) {
             try {
                 boolean expected = jObject.getJSONObject("asserts").getBoolean(key);
-                assertThat(expected, equalTo(myBinarySearchTree.containsKey(Integer.parseInt(key))));
+                assertThat(expected, equalTo(myBinarySearchTree.contains(Integer.parseInt(key))));
             } catch (JSONException e) {
                 assertThrows(IllegalArgumentException.class, () -> {
-                    myBinarySearchTree.containsKey(Integer.parseInt(key));
+                    myBinarySearchTree.contains(Integer.parseInt(key));
                 });
             }
         }
@@ -237,9 +237,9 @@ public class MyAvlBSTTest {
             myBinarySearchTree.put(Integer.parseInt(key), jObject.getJSONObject("bst").getInt(key));
         }
         int deleteKey = jObject.getInt("delete");
-        assertThat(true, equalTo(myBinarySearchTree.containsKey(deleteKey)));
+        assertThat(true, equalTo(myBinarySearchTree.contains(deleteKey)));
         myBinarySearchTree.delete(deleteKey);
-        assertThat(false, equalTo(myBinarySearchTree.containsKey(deleteKey)));
+        assertThat(false, equalTo(myBinarySearchTree.contains(deleteKey)));
     }
 
     @ParameterizedTest

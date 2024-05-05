@@ -7,11 +7,18 @@ public interface MyBinarySearchTree<K, V> {
      */
     interface TreeNode<K, V> {
         /**
-         * 获取树结点键值（不可变）
+         * 获取树结点键值
          * 
          * @return 树结点键值
          */
         K getKey();
+
+        /**
+         * 设置树结点键值
+         * 
+         * @param key 修改后的键
+         */
+        void setKey(K key);
 
         /**
          * 获取树结点值
@@ -98,6 +105,17 @@ public interface MyBinarySearchTree<K, V> {
     }
 
     // MARK:Query Operations
+    /**
+     * 返回根结点
+     * 
+     * @return 根结点
+     */
+    TreeNode<K, V> getRoot();
+
+    /**
+     * 设置根结点
+     */
+    void setRoot(TreeNode<K, V> treeNode);
 
     /**
      * 树存储数据量
@@ -120,7 +138,7 @@ public interface MyBinarySearchTree<K, V> {
      * @return 如果哈希表包含指定键的映射，返回 <tt>true</tt>
      * @throws IllegalArgumentException 如果键 {@code key} 为 {@code null}
      */
-    boolean containsKey(K key);
+    boolean contains(K key);
 
     /**
      * 如果结点存在，那么返回结点值，否则返回 {@code null}
