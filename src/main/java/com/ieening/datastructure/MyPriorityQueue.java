@@ -2,7 +2,6 @@ package com.ieening.datastructure;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.Key;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -82,9 +81,7 @@ public class MyPriorityQueue<E> implements MyQueue<E> {
 
     public MyPriorityQueue(Object[] objs) {
         initElementsFromArray(objs);
-
         comparator = null;
-
         heapify();
     }
 
@@ -103,6 +100,7 @@ public class MyPriorityQueue<E> implements MyQueue<E> {
     }
 
     public MyPriorityQueue(Object[] objs, Comparator<? super E> comparator) {
+        initElementsFromArray(objs);
         this.comparator = comparator;
         heapify();
     }
@@ -451,7 +449,8 @@ public class MyPriorityQueue<E> implements MyQueue<E> {
         hs = fontMetrics.getDescent();
         graphics.drawString(String.valueOf(data[index]), (float) (xs - ws / 2.0), (float) (ys + hs));
         // 绘制 索引值
-        graphics.drawString(String.valueOf(index), (float) (xs - ws / 2.0), (float) (ys + 1.5 * nodeRadius * bufferedImage.getHeight()+hs));
+        graphics.drawString(String.valueOf(index), (float) (xs - ws / 2.0),
+                (float) (ys + 1.5 * nodeRadius * bufferedImage.getHeight() + hs));
 
         drawNodes(getRightChildIndex(index), coordinatesMap, nodeRadius, graphics, bufferedImage);
     }

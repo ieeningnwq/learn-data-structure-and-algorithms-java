@@ -3,6 +3,7 @@ package ieening.datastructure;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,6 +32,19 @@ public class MyPriorityQueueTest {
         Object[] initElements = jObject.getJSONArray("init").toList().toArray();
         Object[] expectElements = jObject.getJSONArray("expect").toList().toArray();
         MyPriorityQueue<Integer> pq = new MyPriorityQueue<>(initElements);
+
+        assertThat(expectElements, equalTo(pq.toArray()));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "{\"init\":[1,2,3,4,5,6,7,8],\"expect\":[8,5,7,4,1,6,3,2]}"
+    })
+    public void testCreateWithComparator(String parameterJsonString) {
+        JSONObject jObject = new JSONObject(parameterJsonString);
+        Object[] initElements = jObject.getJSONArray("init").toList().toArray();
+        Object[] expectElements = jObject.getJSONArray("expect").toList().toArray();
+        MyPriorityQueue<Integer> pq = new MyPriorityQueue<>(initElements, Comparator.reverseOrder());
 
         assertThat(expectElements, equalTo(pq.toArray()));
     }
@@ -99,7 +113,7 @@ public class MyPriorityQueueTest {
         }
         Object[] expect = jObject.getJSONArray("expect").toList().toArray();
         Iterator<Integer> pqIterator = myPq.iterator();
-        int index=0;
+        int index = 0;
         while (pqIterator.hasNext()) {
             assertThat(expect[index++], equalTo(pqIterator.next()));
         }
@@ -121,7 +135,7 @@ public class MyPriorityQueueTest {
             assertThat(expectList.get(i), equalTo(myPq.remove(removeList.get(i))));
         }
         Iterator<Integer> pqIterator = myPq.iterator();
-        int index=0;
+        int index = 0;
         while (pqIterator.hasNext()) {
             assertThat(lastList.get(index++), equalTo(pqIterator.next()));
         }
