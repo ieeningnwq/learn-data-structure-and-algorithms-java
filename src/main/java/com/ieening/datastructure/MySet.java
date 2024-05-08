@@ -93,10 +93,10 @@ public interface MySet<E> extends Iterable<E> {
      * @throws NullPointerException 如果给定集合为 {@code null} 并且结合不支持
      *                              {@code null}
      */
-    boolean containsAll(MySet<?> c);
+    boolean containsAll(MySet<?> mySet);
 
     /**
-     * 集合添加给定集合内的所有元素
+     * 集合添加给定集合内的所有元素，集合中并集运算
      *
      * @param c 待添加的集合
      * @return 如果集合元素在调用完该方法后发生改变后，返回<tt>true</tt>
@@ -106,10 +106,10 @@ public interface MySet<E> extends Iterable<E> {
      *                                       {@code null}
      * @throws IllegalArgumentException      如果因为待添加集合内的元素原因导致操作失败
      */
-    boolean addAll(MySet<? extends E> c);
+    boolean addAll(MySet<? extends E> mySet);
 
     /**
-     * 集合移除给定集合内的所有元素
+     * 集合移除给定集合内的所有元素，集合中的差集运算
      *
      * @param c 待移除的集合
      * @return 如果集合元素在调用完该方法后发生改变后，返回<tt>true</tt>
@@ -118,7 +118,19 @@ public interface MySet<E> extends Iterable<E> {
      * @throws NullPointerException          如果给定集合为 {@code null} 并且结合不支持
      *                                       {@code null}
      */
-    boolean removeAll(MySet<?> c);
+    boolean removeAll(MySet<?> mySet);
+
+    /**
+     * 交集运算
+     * 
+     * @param mySet
+     * @return
+     * @throws UnsupportedOperationException 如果集合不支持<tt>retainAll</tt>操作
+     * @throws ClassCastException            如果给定集合元素类型与集合元素类型不匹配
+     * @throws NullPointerException          如果给定集合为 {@code null} 并且结合不支持
+     *                                       {@code null}
+     */
+    boolean retainAll(MySet<?> mySet);
 
     /**
      * 移除集合内所有元素，方法执行完后，集合为空

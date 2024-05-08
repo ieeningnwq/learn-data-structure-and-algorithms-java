@@ -368,7 +368,16 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
                 } while (index < t.length && ((next = t[index++]) == null));
             }
             return e;
+        }
 
+        public final void remove() {
+            Node<K, V> p = current;
+            if (p == null) {
+                throw new IllegalStateException();
+            }
+            current = null;
+            K key = p.key;
+            removeNode(key);
         }
     }
 
@@ -459,6 +468,11 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
         @Override
         public void clear() {
             throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean retainAll(MySet<?> mySet) {
+            throw new UnsupportedOperationException("Unimplemented method 'retainAll'");
         }
 
     }
@@ -685,6 +699,11 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
         @Override
         public void clear() {
             throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean retainAll(MySet<?> mySet) {
+            throw new UnsupportedOperationException("Unimplemented method 'retainAll'");
         }
     }
 
