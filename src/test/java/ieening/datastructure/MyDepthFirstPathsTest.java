@@ -30,17 +30,19 @@ public class MyDepthFirstPathsTest {
         }
 
         undirectedGraph = new MyUndirectedGraph(scanner);
-        mPaths = new MyDepthFirstPaths(undirectedGraph, 0);
-        mPaths.run();
     }
 
     @Test
     public void testHasPathTo() {
+        mPaths = new MyDepthFirstPaths(undirectedGraph, 0);
+
         assertThat(true, equalTo(mPaths.hasPathTo((int) (Math.random() * undirectedGraph.V()))));
     }
 
     @Test
     public void testPathTo() {
+        mPaths = new MyDepthFirstPaths(undirectedGraph, 0);
+
         MyList<Integer> myList = new MyArrayList<>();
 
         for (int vertex : mPaths.pathTo(2)) {

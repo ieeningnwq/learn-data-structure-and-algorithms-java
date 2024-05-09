@@ -5,40 +5,25 @@ import java.util.Iterator;
 public class MyDepthFirstSearch {
     private boolean[] marked; // marked[v] 值表示是否有路径 s-v
     private int count; // 和 s 相连顶点个数
-    private boolean recursive = true; // 是否迭代实现
-
-    /**
-     * @param recursive the recursive to set
-     */
-    public void setRecursive(boolean recursive) {
-        this.recursive = recursive;
-    }
 
     private MyList<Integer> traversalVertex; // 遍历的顶点
-    private MyUndirectedGraph graph;
-    private int source;
 
-    public MyDepthFirstSearch(MyUndirectedGraph graph, int source) {
+    public MyDepthFirstSearch(MyUndirectedGraph graph, int source, boolean recursive) {
         marked = new boolean[graph.V()];
         validateVertex(source);
-        this.graph = graph;
-        this.source = source;
         traversalVertex = new MyArrayList<>();
-    }
-
-    public void dfs() {
-        traversalVertex.clear();
-        if (recursive)
+        if (recursive) {
             dfs0(graph, source);
-        else
-            dfs1();
+        } else {
+            dfs1(graph, source);
+        }
     }
 
     /**
      * 深度优先搜索，迭代实现
      */
     @SuppressWarnings("unchecked")
-    private void dfs1() {
+    private void dfs1(MyUndirectedGraph graph, int source) {
         Iterator<Integer>[] adj = (Iterator<Integer>[]) new Iterator[graph.V()];
         for (int i = 0; i < adj.length; i++) {
             adj[i] = graph.adj(i).iterator();

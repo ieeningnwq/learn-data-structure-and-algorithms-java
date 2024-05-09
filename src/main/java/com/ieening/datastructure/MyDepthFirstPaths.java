@@ -3,18 +3,14 @@ package com.ieening.datastructure;
 public class MyDepthFirstPaths {
     private boolean[] marked; // marked[v]：s-v 路径是否存在
     private int[] edgeTo; // edgeTo[v]：s-v 路径中最后一条边
-    private MyUndirectedGraph graph; // 图
-    private int source; // 起点
+
+    private final int source; // 起始顶点
 
     public MyDepthFirstPaths(MyUndirectedGraph graph, int source) {
-        this.source = source;
-        this.graph = graph;
-        edgeTo = new int[graph.V()];
         marked = new boolean[graph.V()];
         validateVertex(source);
-    }
-
-    public void run() {
+        this.source = source;
+        edgeTo = new int[graph.V()];
         dfs(graph, source);
     }
 

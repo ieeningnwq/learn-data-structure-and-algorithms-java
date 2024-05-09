@@ -50,6 +50,6 @@ public class MyUndirectedGraphTest {
     @Test
     public void testDraw() {
         undirectedGraph = new MyUndirectedGraph(scanner);
-        undirectedGraph.draw("src\\test\\java\\ieening\\output\\undirected_graph.jpg");
+        undirectedGraph.draw("src\\test\\java\\ieening\\output\\undirected_graph_tingG.jpg");
     }
 }

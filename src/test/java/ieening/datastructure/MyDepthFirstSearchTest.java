@@ -29,19 +29,18 @@ public class MyDepthFirstSearchTest {
         }
 
         undirectedGraph = new MyUndirectedGraph(scanner);
-        dfs = new MyDepthFirstSearch(undirectedGraph, 0);
-        dfs.setRecursive(false);
+
     }
 
     @Test
     public void testRecursiveDfs() {
-        dfs.dfs();
+        dfs = new MyDepthFirstSearch(undirectedGraph, 0, true);
         assertThat(true, equalTo(dfs.marked((int) (Math.random() * undirectedGraph.V()))));
     }
 
     @Test
     public void testReversalVertex() {
-        dfs.dfs();
+        dfs = new MyDepthFirstSearch(undirectedGraph, 0, false);
         assertThat(new int[] { 0, 5, 3, 2, 4, 1 }, equalTo(dfs.traversalVertexes()));
     }
 }

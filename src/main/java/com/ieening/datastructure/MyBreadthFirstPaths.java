@@ -6,18 +6,13 @@ public class MyBreadthFirstPaths {
     private int[] edgeTo; // edgeTo[v]：最短路径 s-v，前一条边
     private int[] distTo; // distTo[v]：s-v 最短路径边的数量
 
-    private MyUndirectedGraph graph; // 图
-    private int source = -1; // 起点
-    private Iterable<Integer> sources; // 多个起点
-
     public MyBreadthFirstPaths(MyUndirectedGraph graph, int source) {
         marked = new boolean[graph.V()];
         distTo = new int[graph.V()];
         edgeTo = new int[graph.V()];
         validateVertex(source);
-        this.graph = graph;
-        this.source = source;
-        this.sources = null;
+        bfs(graph, source);
+
     }
 
     public MyBreadthFirstPaths(MyUndirectedGraph graph, Iterable<Integer> sources) {
@@ -25,9 +20,8 @@ public class MyBreadthFirstPaths {
         distTo = new int[graph.V()];
         edgeTo = new int[graph.V()];
         validateVertices(sources);
-        this.graph = graph;
-        this.sources = sources;
-        this.source = -1;
+        bfs(graph, sources);
+
     }
 
     private void validateVertices(Iterable<Integer> vertices) {
@@ -44,13 +38,6 @@ public class MyBreadthFirstPaths {
         if (vertexCount == 0) {
             throw new IllegalArgumentException("zero vertices");
         }
-    }
-
-    public void run() {
-        if (source != -1)
-            bfs(graph, source);
-        else
-            bfs(graph, sources);
     }
 
     private void bfs(MyUndirectedGraph graph, Iterable<Integer> sources) {
