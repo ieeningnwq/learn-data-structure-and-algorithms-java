@@ -2,7 +2,7 @@ package com.ieening.doexercises.leetcode;
 
 import java.util.Arrays;
 
-public class RansomNote {
+public class Q383RansomNote {
     public boolean canConstruct(String ransomNote, String magazine) {
         if (ransomNote.length() > magazine.length()) {
             return false;

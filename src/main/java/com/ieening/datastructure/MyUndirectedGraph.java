@@ -10,10 +10,14 @@ import org.graphstream.stream.file.FileSinkImages;
 import org.graphstream.stream.file.FileSinkImages.LayoutPolicy;
 
 public class MyUndirectedGraph {
+    // MARK:Fields
+
     private static final String NEWLINE = System.lineSeparator();
     private final int V; // 顶点数目
     private int E; // 边数目
     private MyList<Integer>[] adj; // 邻接表
+
+    // MARK:Constructor
 
     /**
      * 初始化一个顶点个数为 {@code V} 边个数为 0 的空图
@@ -103,6 +107,8 @@ public class MyUndirectedGraph {
         }
     }
 
+    // MARK:Query Operations
+
     /**
      * 返回图顶点的数量
      *
@@ -125,22 +131,6 @@ public class MyUndirectedGraph {
     private void validateVertex(int v) {
         if (v < 0 || v >= V)
             throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V - 1));
-    }
-
-    /**
-     * 向图中添加无向边
-     *
-     * @param v 边中一个顶点
-     * @param w 边中另一个顶点
-     * @throws IllegalArgumentException 如果 {@code 0 <= v < V} 以及
-     *                                  {@code 0 <= w < V}，否则抛出异常
-     */
-    public void addEdge(int v, int w) {
-        validateVertex(v);
-        validateVertex(w);
-        E++;
-        adj[v].add(w);
-        adj[w].add(v);
     }
 
     /**
@@ -167,6 +157,7 @@ public class MyUndirectedGraph {
         return adj[v].size();
     }
 
+    @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
         s.append(V + " vertices, " + E + " edges " + NEWLINE);
@@ -178,6 +169,25 @@ public class MyUndirectedGraph {
             s.append(NEWLINE);
         }
         return s.toString();
+
+    }
+
+    // MARK:Modify Operations
+
+    /**
+     * 向图中添加无向边
+     *
+     * @param v 边中一个顶点
+     * @param w 边中另一个顶点
+     * @throws IllegalArgumentException 如果 {@code 0 <= v < V} 以及
+     *                                  {@code 0 <= w < V}，否则抛出异常
+     */
+    public void addEdge(int v, int w) {
+        validateVertex(v);
+        validateVertex(w);
+        E++;
+        adj[v].add(w);
+        adj[w].add(v);
     }
 
     // MARK:Visible
@@ -185,7 +195,7 @@ public class MyUndirectedGraph {
     public void draw(String filePath) {
         System.setProperty("org.graphstream.ui", "swing");
         Graph graph = new SingleGraph(this.getClass().getSimpleName());
-        graph.setAttribute("ui.stylesheet", "url(file:src/main/resources/asserts/graph.css)");
+        graph.setAttribute("ui.stylesheet", "url(file:src/main/resources/assets/graph.css)");
         graph.setStrict(false);
 
         // 加入结点

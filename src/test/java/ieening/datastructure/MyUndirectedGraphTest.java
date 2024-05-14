@@ -20,7 +20,7 @@ public class MyUndirectedGraphTest {
 
     @BeforeEach
     public void setUpEach() throws FileNotFoundException {
-        File file = new File("src\\main\\resources\\asserts\\tinyG.txt");
+        File file = new File("src\\main\\resources\\assets\\tinyGex2.txt");
         if (file.exists()) {
             FileInputStream fis = new FileInputStream(file);
             scanner = new Scanner(new BufferedInputStream(fis));
@@ -50,6 +50,6 @@ public class MyUndirectedGraphTest {
     @Test
     public void testDraw() {
         undirectedGraph = new MyUndirectedGraph(scanner);
-        undirectedGraph.draw("src\\test\\java\\ieening\\output\\undirected_graph_tingG.jpg");
+        undirectedGraph.draw("src\\test\\java\\ieening\\output\\undirected_graph_tingGex2.jpg");
     }
 }
