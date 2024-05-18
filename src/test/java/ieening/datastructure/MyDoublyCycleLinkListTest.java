@@ -13,14 +13,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.ieening.datastructure.MySingleCycleLinkedList;
+import com.ieening.datastructure.MyDoublyCycleLinkList;
 
-public class MySingleCycleLinkedListTest {
-    private MySingleCycleLinkedList<Integer> mCycleLinkedList;
+public class MyDoublyCycleLinkListTest {
+    private MyDoublyCycleLinkList<Integer> mCycleLinkedList;
 
     @BeforeEach
     public void setUpEach() {
-        mCycleLinkedList = new MySingleCycleLinkedList<>();
+        mCycleLinkedList = new MyDoublyCycleLinkList<>();
     }
 
     @ParameterizedTest
@@ -86,7 +86,9 @@ public class MySingleCycleLinkedListTest {
 
         try {
             int insertValue = jsonObject.getInt("insertValue");
+            int size = mCycleLinkedList.size();
             mCycleLinkedList.add(insertIndex, insertValue);
+            assertEquals(size + 1, mCycleLinkedList.size());
             assertEquals(getResult, mCycleLinkedList.get(getIndex));
         } catch (Exception e) {
             assertThrows(IndexOutOfBoundsException.class, () -> mCycleLinkedList.add(insertIndex, insertIndex));

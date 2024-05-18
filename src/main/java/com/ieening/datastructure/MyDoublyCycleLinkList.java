@@ -2,41 +2,25 @@ package com.ieening.datastructure;
 
 import java.util.Iterator;
 
-public class MySingleCycleLinkedList<E> implements Iterable<E> {
+public class MyDoublyCycleLinkList<E> implements Iterable<E> {
     // MARK:Fields
 
-    /**
-     * 头结点
-     */
-    private Node<E> head;
+    private DulNode<E> head; // 链表头结点
 
-    /**
-     * 定义结点
-     */
-    static class Node<E> {
-        private Node<E> next;
+    private int size; // 链表结点个数
+
+    static class DulNode<E> {
         private E item;
+        private DulNode<E> prior; // 直接前驱指针
+        private DulNode<E> next; // 直接后继指针
 
-        Node(E item, Node<E> next) {
+        DulNode(E item) {
+            this(item, null, null);
+        }
+
+        DulNode(E item, DulNode<E> prior, DulNode<E> next) {
             this.item = item;
-            this.next = next;
-        }
-
-        Node() {
-            this(null, null);
-        }
-
-        /**
-         * @return the next
-         */
-        public Node<E> getNext() {
-            return next;
-        }
-
-        /**
-         * @param next the next to set
-         */
-        public void setNext(Node<E> next) {
+            this.prior = prior;
             this.next = next;
         }
 
@@ -54,41 +38,65 @@ public class MySingleCycleLinkedList<E> implements Iterable<E> {
             this.item = item;
         }
 
+        /**
+         * @return the prior
+         */
+        public DulNode<E> getPrior() {
+            return prior;
+        }
+
+        /**
+         * @param prior the prior to set
+         */
+        public void setPrior(DulNode<E> prior) {
+            this.prior = prior;
+        }
+
+        /**
+         * @return the next
+         */
+        public DulNode<E> getNext() {
+            return next;
+        }
+
+        /**
+         * @param next the next to set
+         */
+        public void setNext(DulNode<E> next) {
+            this.next = next;
+        }
     }
 
-    // MARK:Constructor
+    // MARK: Constructor
 
     /**
-     * 创建一个空的单循环链表
+     * 构建一个空的双向循环链表
      */
-    public MySingleCycleLinkedList() {
-        head = new Node<>();
+    public MyDoublyCycleLinkList() {
+        head = new DulNode<>(null);
         head.setNext(head);
+        head.setPrior(head);
+
+        size = 0;
     }
 
     // MARK:Query Operations
 
     public int size() {
-        int size = 0;
-        Node<E> node = head;
-        while ((node = node.getNext()) != head)
-            size++;
-
         return size;
     }
 
     public boolean isEmpty() {
-        return head == head.next;
+        return size == 0;
     }
 
     public E get(int index) {
         checkElementIndex(index);
         return node(index).getItem();
-
     }
 
-    private Node<E> node(int index) {
-        Node<E> x = head.next;
+    private DulNode<E> node(int index) {
+        DulNode<E> x = head.next;
         for (int i = 0; i < index; i++) {
             x = x.next;
         }
@@ -111,13 +119,13 @@ public class MySingleCycleLinkedList<E> implements Iterable<E> {
     public int indexOf(Object o) {
         int index = 0;
         if (o == null) {
-            for (Node<E> x = head.next; x != head; x = x.next) {
+            for (DulNode<E> x = head.next; x != head; x = x.next) {
                 if (x.item == null)
                     return index;
                 index++;
             }
         } else {
-            for (Node<E> x = head.next; x != head; x = x.next) {
+            for (DulNode<E> x = head.next; x != head; x = x.next) {
                 if (o.equals(x.item))
                     return index;
                 index++;
@@ -127,9 +135,9 @@ public class MySingleCycleLinkedList<E> implements Iterable<E> {
     }
 
     public Object[] toArray() {
-        Object[] result = new Object[size()];
+        Object[] result = new Object[size];
         int index = 0;
-        for (Node<E> x = head.getNext(); x != head; x = x.getNext()) {
+        for (DulNode<E> x = head.getNext(); x != head; x = x.getNext()) {
             result[index++] = x.getItem();
         }
         return result;
@@ -143,7 +151,7 @@ public class MySingleCycleLinkedList<E> implements Iterable<E> {
         }
         int index = 0;
         Object[] result = a;
-        for (Node<E> x = head.getNext(); x != head; x = x.getNext()) {
+        for (DulNode<E> x = head.getNext(); x != head; x = x.getNext()) {
             result[index++] = x.getItem();
         }
         if (a.length > size) {
@@ -158,7 +166,7 @@ public class MySingleCycleLinkedList<E> implements Iterable<E> {
     }
 
     private class CycleLinkedListIterator implements Iterator<E> {
-        private Node<E> current = head.getNext();
+        private DulNode<E> current = head.getNext();
 
         @Override
         public boolean hasNext() {
@@ -173,7 +181,6 @@ public class MySingleCycleLinkedList<E> implements Iterable<E> {
         }
 
     }
-
     // MARK:Modify Operations
 
     public boolean add(E e) {
@@ -183,12 +190,14 @@ public class MySingleCycleLinkedList<E> implements Iterable<E> {
 
     private void linkTail(E e) {
         // 找到末端结点
-        Node<E> current = head;
+        DulNode<E> current = head;
         while ((current.getNext()) != head) {
             current = current.getNext();
         }
         // 新建连接 head 结点，并连接到末端结点
-        current.setNext(new Node<E>(e, head));
+        current.setNext(new DulNode<E>(e, current, head));
+        // 修改 size
+        size++;
     }
 
     public void add(int index, E element) {
@@ -203,17 +212,13 @@ public class MySingleCycleLinkedList<E> implements Iterable<E> {
     }
 
     private void linkBefore(E element, int index) {
-        Node<E> newNode = new Node<>(element, null);
-        if (index == 0) { // 没有前置
-            final Node<E> h = head.next; // 保存头节点
-            newNode.next = h;// 接上链表
-            head.next = newNode;
-        } else { // 有前置
-            Node<E> preX = node(index - 1);
-            Node<E> x = preX.next;
-            preX.next = newNode;
-            newNode.next = x;
-        }
+        DulNode<E> x = node(index);
+        DulNode<E> preX = x.getPrior();
+        DulNode<E> newDulNode = new DulNode<>(element, preX, x);
+        preX.setNext(newDulNode);
+        x.setPrior(newDulNode);
+        // 修改 size
+        size++;
     }
 
     public E remove(int index) {
@@ -222,16 +227,19 @@ public class MySingleCycleLinkedList<E> implements Iterable<E> {
     }
 
     private E unlink(int index) {
-        final Node<E> x = node(index);
+        final DulNode<E> x = node(index);
+        DulNode<E> preX = x.getPrior();
+        DulNode<E> nextX = x.getNext();
         final E element = x.item;
-        if (head.getNext().getNext() == head && index == 0 && size() == 1) { // 仅有一个节点
-            head.setNext(head);
-        } else if (index == 0) { // 多个节点，删除头节点
-            head.setNext(x.getNext());
-        } else { // 多个节点非首节点
-            Node<E> preX = node(index - 1);
-            preX.setNext(x.getNext());
-        }
+        // 修改指针使得 x 删除
+        preX.setNext(nextX);
+        nextX.setPrior(preX);
+        // 删除结点 x
+        x.setItem(null);
+        x.setPrior(null);
+        x.setNext(null);
+        // 修改 size
+        size--;
         return element;
     }
 
@@ -247,7 +255,7 @@ public class MySingleCycleLinkedList<E> implements Iterable<E> {
 
     public E set(int index, E element) {
         checkElementIndex(index);
-        Node<E> x = node(index);
+        DulNode<E> x = node(index);
         E oldValue = x.getItem();
         x.setItem(element);
         return oldValue;
@@ -256,7 +264,7 @@ public class MySingleCycleLinkedList<E> implements Iterable<E> {
     public boolean remove(Object o) {
         int i = 0;
         if (o == null) {
-            for (Node<E> x = head.next; x != head; x = x.next) {
+            for (DulNode<E> x = head.next; x != head; x = x.next) {
                 if (x.item == null) {
                     unlink(i);
                     return true;
@@ -264,7 +272,7 @@ public class MySingleCycleLinkedList<E> implements Iterable<E> {
                 i++;
             }
         } else {
-            for (Node<E> x = head.next; x != head; x = x.next) {
+            for (DulNode<E> x = head.next; x != head; x = x.next) {
                 if (o.equals(x.item)) {
                     unlink(i);
                     return true;
@@ -277,14 +285,19 @@ public class MySingleCycleLinkedList<E> implements Iterable<E> {
 
     // MARK:Bulk Operations
     public void clear() {
-        Node<E> current = head.next;
+        DulNode<E> current = head.next;
         while (current != head) {
-            current.setItem(null);
-            Node<E> currentNext = current.next;
+            current.item = null;
+            DulNode<E> currentNext = current.next;
             current.setNext(null);
+            current.setPrior(null);
             current = currentNext;
         }
         head.setNext(head);
+        head.setPrior(head);
+
+        // 修改 size
+        size = 0;
     }
 
     // MARK:Visible
@@ -297,7 +310,7 @@ public class MySingleCycleLinkedList<E> implements Iterable<E> {
         // 绘制结点
         int size = size();
         // 绘制 head 结点
-        for (Node<E> x = head.getNext(); x != head; x = x.getNext()) {
+        for (DulNode<E> x = head.getNext(); x != head; x = x.getNext()) {
 
         }
     }

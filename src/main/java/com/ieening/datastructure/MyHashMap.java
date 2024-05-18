@@ -1,6 +1,7 @@
 package com.ieening.datastructure;
 
 import java.util.Iterator;
+import java.util.Objects;
 
 public class MyHashMap<K, V> implements MyMap<K, V> {
     // MARK:Fields
@@ -192,7 +193,7 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
     }
 
     private int indexOf(Object key) {
-        return (key.hashCode() & 0x7fffffff) % table.length;
+        return (Objects.hashCode(key) & 0x7fffffff) % table.length;
     }
 
     // MARK:Modification Operations
