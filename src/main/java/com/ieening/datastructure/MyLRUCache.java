@@ -11,9 +11,9 @@ public class MyLRUCache<K, V> {
     private final int capacity;
     // 哈希表
     private final MyHashMap<K, DoubleNode<K, V>> map = new MyHashMap<>();
-    // 链表头结点
+    // 链表伪头结点
     private final DoubleNode<K, V> head = new DoubleNode<K, V>(null, null, null, null);
-    // 链表尾结点
+    // 链表伪尾结点
     private final DoubleNode<K, V> tail = new DoubleNode<K, V>(null, null, null, null);
 
     /**
@@ -155,7 +155,6 @@ public class MyLRUCache<K, V> {
         deleteNode.setPrior(null);
         deleteNode.setNext(null);
         deleteNode.setKey(null);
-        
     }
 
     private void addToHead(K key, V value) {
