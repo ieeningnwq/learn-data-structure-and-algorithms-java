@@ -59,7 +59,7 @@ public class MyLinkedList<E> implements MyList<E> {
     // MARK:Positional Access Operations
     @Override
     public E get(int index) {
-        checkPositionIndex(index);
+        checkElementIndex(index);
         return node(index).item;
     }
 
