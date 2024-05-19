@@ -13,7 +13,7 @@ public class MyArray<E> implements Iterable<E> {
     /**
      * The array into which the elements of the MyArray are stored.
      * The capacity of the MyArray is the length of this array buffer. Any
-     * empty MyArray with elementData == EMPTY_ELEMENTDATA.
+     * empty MyArray with elementData == EMPTY_ELEMENT_DATA.
      */
     private final Object[] elementData;
     /**
@@ -28,14 +28,14 @@ public class MyArray<E> implements Iterable<E> {
     /**
      * Shared empty array instance used for empty instances.
      */
-    private static final Object[] EMPTY_ELEMENTDATA = {};
+    private static final Object[] EMPTY_ELEMENT_DATA = {};
 
     /**
      * 默认容量
      */
     private static final int DEFAULT_CAPACITY = 10;
 
-    // MARK: Constructers
+    // MARK: Constructors
     /**
      * 通过给定数组初始化 MyArray
      * 
@@ -55,7 +55,7 @@ public class MyArray<E> implements Iterable<E> {
         if (capacity > 0) {
             this.elementData = new Object[capacity];
         } else if (capacity == 0) {
-            this.elementData = EMPTY_ELEMENTDATA;
+            this.elementData = EMPTY_ELEMENT_DATA;
         } else {
             throw new IllegalArgumentException("Illegal Capacity: " +
                     capacity);
