@@ -12,14 +12,14 @@ import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.ieening.datastructure.MyDepthFirstSearch;
+import com.ieening.datastructure.MyBreadthFirstSearch;
 import com.ieening.datastructure.MyDigraph;
 import com.ieening.datastructure.MyUndirectedGraph;
 
-public class MyDepthFirstSearchTest {
+public class MyBreadthFirstSearchTest {
     private MyUndirectedGraph undirectedGraph;
     private MyDigraph digraph;
-    private MyDepthFirstSearch dfs;
+    private MyBreadthFirstSearch bfs;
 
     @BeforeEach
     public void setUpEach() throws FileNotFoundException {
@@ -40,25 +40,25 @@ public class MyDepthFirstSearchTest {
 
     @Test
     public void testRecursiveDfsUndirectedGraph() {
-        dfs = new MyDepthFirstSearch(undirectedGraph, 0, true);
-        assertThat(true, equalTo(dfs.marked((int) (Math.random() * undirectedGraph.V()))));
+        bfs = new MyBreadthFirstSearch(undirectedGraph, 0);
+        assertThat(true, equalTo(bfs.marked((int) (Math.random() * undirectedGraph.V()))));
     }
 
     @Test
     public void testReversalVertexUndirectedGraph() {
-        dfs = new MyDepthFirstSearch(undirectedGraph, 0, false);
-        assertThat(new int[] { 0, 5, 3, 2, 4, 1 }, equalTo(dfs.traversalVertexes()));
+        bfs = new MyBreadthFirstSearch(undirectedGraph, 0);
+        assertThat(new int[] { 0, 5, 1, 2, 3, 4 }, equalTo(bfs.traversalVertexes()));
     }
 
     @Test
     public void testRecursiveDfsDigraph() {
-        dfs = new MyDepthFirstSearch(digraph, 0, true);
-        assertThat(true, equalTo(dfs.marked((int) (Math.random() * dfs.traversalVertexes().length))));
+        bfs = new MyBreadthFirstSearch(digraph, 0);
+        assertThat(true, equalTo(bfs.marked(2)));
     }
 
     @Test
     public void testReversalVertexDigraph() {
-        dfs = new MyDepthFirstSearch(digraph, 0, false);
-        assertThat(new int[] { 0, 1, 5, 4, 2, 3 }, equalTo(dfs.traversalVertexes()));
+        bfs = new MyBreadthFirstSearch(undirectedGraph, 0);
+        assertThat(new int[] { 0, 5, 1, 2, 3, 4 }, equalTo(bfs.traversalVertexes()));
     }
 }

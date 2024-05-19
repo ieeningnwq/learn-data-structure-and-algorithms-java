@@ -99,7 +99,7 @@ public class MyDigraph {
      * @throws IllegalArgumentException 如果 {@code 0 <= v || v >= V} 以及
      *                                  {@code 0 <= w || w >= V} 抛出异常
      */
-    private void addEdge(int v, int w) {
+    public void addEdge(int v, int w) {
         validateVertex(v);
         validateVertex(w);
 
