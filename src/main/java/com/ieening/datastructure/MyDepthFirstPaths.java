@@ -6,6 +6,12 @@ public class MyDepthFirstPaths {
 
     private final int source; // 起始顶点
 
+    /**
+     * 无向图深度优先搜索路径问题
+     * 
+     * @param graph  无向图
+     * @param source 起点
+     */
     public MyDepthFirstPaths(MyUndirectedGraph graph, int source) {
         marked = new boolean[graph.V()];
         validateVertex(source);
@@ -14,7 +20,43 @@ public class MyDepthFirstPaths {
         dfs(graph, source);
     }
 
+    /**
+     * 无向图深度优先搜索
+     * 
+     * @param graph 无向图
+     * @param v     顶点
+     */
     private void dfs(MyUndirectedGraph graph, int v) {
+        marked[v] = true;
+        for (int w : graph.adj(v)) {
+            if (!marked[w]) {
+                edgeTo[w] = v;
+                dfs(graph, w);
+            }
+        }
+    }
+
+    /**
+     * 有向图深度优先搜索路径问题
+     * 
+     * @param graph  无向图
+     * @param source 起点
+     */
+    public MyDepthFirstPaths(MyDigraph graph, int source) {
+        marked = new boolean[graph.V()];
+        edgeTo = new int[graph.V()];
+        validateVertex(source);
+        this.source = source;
+        dfs(graph, source);
+    }
+
+    /**
+     * 有向图深度优先搜索
+     * 
+     * @param graph
+     * @param v
+     */
+    private void dfs(MyDigraph graph, int v) {
         marked[v] = true;
         for (int w : graph.adj(v)) {
             if (!marked[w]) {

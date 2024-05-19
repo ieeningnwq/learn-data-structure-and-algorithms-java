@@ -24,6 +24,70 @@ public class MyBreadthFirstPaths {
 
     }
 
+    public MyBreadthFirstPaths(MyDigraph graph, int source) {
+        marked = new boolean[graph.V()];
+        distTo = new int[graph.V()];
+        edgeTo = new int[graph.V()];
+        validateVertex(source);
+        bfs(graph, source);
+
+    }
+
+    private void bfs(MyDigraph graph, int source) {
+        MyQueue<Integer> queue = new MyResizingArrayQueue<>();
+        for (int v = 0; v < graph.V(); v++) {
+            distTo[v] = INFINITY;
+        }
+        distTo[source] = 0;
+        marked[source] = true;
+
+        queue.enqueue(source);
+
+        while (!queue.isEmpty()) {
+            int v = queue.dequeue();
+            for (Integer w : graph.adj(v)) {
+                if (!marked[w]) {
+                    edgeTo[w] = v;
+                    distTo[w] = distTo[v] + 1;
+                    marked[w] = true;
+                    queue.enqueue(w);
+                }
+            }
+        }
+    }
+
+    public MyBreadthFirstPaths(MyDigraph graph, Iterable<Integer> sources) {
+        marked = new boolean[graph.V()];
+        distTo = new int[graph.V()];
+        edgeTo = new int[graph.V()];
+        validateVertices(sources);
+        bfs(graph, sources);
+
+    }
+
+    private void bfs(MyDigraph graph, Iterable<Integer> sources) {
+        MyQueue<Integer> queue = new MyResizingArrayQueue<>();
+        for (int v = 0; v < graph.V(); v++) {
+            distTo[v] = INFINITY;
+        }
+        for (Integer s : sources) {
+            marked[s] = true;
+            distTo[s] = 0;
+            queue.enqueue(s);
+        }
+        while (!queue.isEmpty()) {
+            int v = queue.dequeue();
+            for (int w : graph.adj(v)) {
+                if (!marked[w]) {
+                    edgeTo[w] = v;
+                    distTo[w] = distTo[v] + 1;
+                    marked[w] = true;
+                    queue.enqueue(w);
+                }
+            }
+        }
+    }
+
     private void validateVertices(Iterable<Integer> vertices) {
         if (vertices == null)
             throw new IllegalArgumentException("argument is null");
