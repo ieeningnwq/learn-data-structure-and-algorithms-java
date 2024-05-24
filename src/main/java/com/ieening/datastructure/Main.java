@@ -25,53 +25,36 @@ public class Main {
         // Double
         // HashSet
         // Queue
-        System.arraycopy(args, 0, args, 0, 0);
-        int[] nums1={1,2,3,0,0,0};
-        int[] nums2={2,5,6};
-        Arrays.copyOf(nums2, 0);
-        System.arraycopy(nums2,0,nums1,3,3); // 将 nums2 复制到 nums1
-        System.arraycopy(args, 0, args, 0, 0);
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
+
+    }
+
+}
+
+class Solution {
+    private static class Node {
+        /** * 节点值 */
+        public int value;
+        /** * 左节点 */
+        public Node left;
+        /** * 右节点 */
+        public Node right;
+
+        public Node(int value, Node left, Node right) {
+            this.value = value;
+            this.left = left;
+            this.right = right;
+        }
+    }
+
+    public static void dfs(Node treeNode) {
+        if (treeNode == null) {
+            return;
+        }
+        // 遍历节点
+        // process(treeNode);
+        // 遍历左节点
+        dfs(treeNode.left);
+        // 遍历右节点
+        dfs(treeNode.right);
     }
 }

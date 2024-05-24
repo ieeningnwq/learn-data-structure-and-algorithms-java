@@ -442,6 +442,20 @@ public abstract class AbstractMyBinarySearchTree<K, V> implements MyBinarySearch
         }
     }
 
+    public Iterable<K> depthFirstOrder() {
+        MyList<K> keys = new MyLinkedList<>();
+        depthFirstOrder(getRoot(), keys);
+        return keys;
+    }
+
+    private void depthFirstOrder(TreeNode<K, V> treeNode, MyList<K> keys) {
+        if (Objects.nonNull(treeNode)) {
+            keys.add(treeNode.getKey());
+            depthFirstOrder(treeNode.getLeftChild(), keys);
+            depthFirstOrder(treeNode.getRightChild(), keys);
+        }
+    }
+
     @Override
     public Iterable<K> postOrder() {
         MyQueue<K> keys = new MyResizingArrayQueue<>();

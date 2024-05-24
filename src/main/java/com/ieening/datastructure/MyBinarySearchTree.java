@@ -1,5 +1,7 @@
 package com.ieening.datastructure;
 
+import java.util.NoSuchElementException;
+
 public interface MyBinarySearchTree<K, V> {
     // MARK:Tree Node Interface
     /**
@@ -283,6 +285,13 @@ public interface MyBinarySearchTree<K, V> {
      * @return 按照层序遍历得到所有的键
      */
     Iterable<K> levelOrder();
+
+    /**
+     * 深度优先遍历
+     * 
+     * @return 按照深度优先遍历得到所有键
+     */
+    Iterable<K> depthFirstOrder();
 
     // MARK:Comparison and hashing
 

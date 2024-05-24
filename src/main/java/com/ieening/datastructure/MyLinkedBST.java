@@ -201,4 +201,29 @@ public class MyLinkedBST<K, V> extends AbstractMyBinarySearchTree<K, V> {
         }
         return keys;
     }
+
+    /**
+     * 深度优先非递归
+     */
+    @Override
+    public Iterable<K> depthFirstOrder() {
+        return depthFirstOrder(getRoot());
+    }
+
+    private Iterable<K> depthFirstOrder(TreeNode<K, V> treeNode) {
+        MyStack<TreeNode<K, V>> nodeStack = new MyLinkedListStack<>();
+        MyList<K> keys = new MyLinkedList<>();
+
+        while (treeNode != null) {
+            keys.add(treeNode.getKey());
+            if (treeNode.getRightChild() != null)
+                nodeStack.push(treeNode.getRightChild());
+
+            if (treeNode.getLeftChild() != null)
+                nodeStack.push(treeNode.getLeftChild());
+
+            treeNode = nodeStack.isEmpty() ? null : nodeStack.pop();
+        }
+        return keys;
+    }
 }

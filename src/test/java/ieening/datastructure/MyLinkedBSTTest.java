@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.stream.StreamSupport;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -334,6 +335,21 @@ public class MyLinkedBSTTest {
         }
         assertThat(jObject.getJSONArray("expected").toList().toArray(),
                 equalTo(actual));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "{\"bst\":{4:4,8:8,10:10,5:5,1:1,100:100,87:87,67:67,11:11},\"expected\":[11, 1, 4, 5, 8, 10, 100, 67, 87]}",
+            "{\"bst\":{},\"expected\":[]}",
+
+    })
+    public void testDepthFirstOrder(String parameterJsonString) {
+        JSONObject jObject = new JSONObject(parameterJsonString);
+        for (String key : jObject.getJSONObject("bst").keySet()) {
+            myBinarySearchTree.put(Integer.parseInt(key), jObject.getJSONObject("bst").getInt(key));
+        }
+        assertThat(StreamSupport.stream(jObject.getJSONArray("expected").spliterator(), false).toArray(),
+                equalTo(StreamSupport.stream(myBinarySearchTree.depthFirstOrder().spliterator(), false).toArray()));
     }
 
     @ParameterizedTest
