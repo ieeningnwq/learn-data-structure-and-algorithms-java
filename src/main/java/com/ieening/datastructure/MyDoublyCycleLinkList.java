@@ -307,11 +307,6 @@ public class MyDoublyCycleLinkList<E> implements Iterable<E> {
     }
 
     public void draw(int width, int height, String filePath) {
-        // 绘制结点
-        int size = size();
-        // 绘制 head 结点
-        for (DulNode<E> x = head.getNext(); x != head; x = x.getNext()) {
 
-        }
     }
 }
