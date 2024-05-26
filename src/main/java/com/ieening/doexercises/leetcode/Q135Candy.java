@@ -1,7 +1,5 @@
 package com.ieening.doexercises.leetcode;
 
-import java.util.Stack;
-
 public class Q135Candy {
     public int candy(int[] ratings) {
         // 确认糖果最少的孩子
@@ -30,7 +28,7 @@ public class Q135Candy {
             }
             totalCandy += preCandy;
         }
-        for (int i = minIndex - 1; i >=0; i--) {
+        for (int i = minIndex - 1; i >= 0; i--) {
             if (ratings[i] > ratings[i - 1]) {
                 preCandy = preCandy + 1;// 右面孩子评分比左面高
             } else {
