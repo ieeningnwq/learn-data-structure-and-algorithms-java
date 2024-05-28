@@ -25,7 +25,7 @@ public class Main {
         // Double
         // HashSet
         // Queue
-
+        int[] a = new int[]{1,2};
     }
 
 }
