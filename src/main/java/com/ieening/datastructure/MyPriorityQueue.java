@@ -260,6 +260,10 @@ public class MyPriorityQueue<E> implements MyQueue<E> {
         return -1;
     }
 
+    public boolean contains(Object o) {
+        return indexOf(o) != -1;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public E peek() {

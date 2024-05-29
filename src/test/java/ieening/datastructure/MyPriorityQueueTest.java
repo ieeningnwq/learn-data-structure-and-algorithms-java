@@ -103,6 +103,19 @@ public class MyPriorityQueueTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "{\"init\":[4,6,9,10,8,13,17,12,14,21,16,3],\"object\":4,\"contains\":true}",
+            "{\"init\":[4,6,9,10,8,13,17,12,14,21,16,3],\"object\":0,\"contains\":false}",
+    })
+    public void testContains(String parameterJsonString) {
+        JSONObject jObject = new JSONObject(parameterJsonString);
+        for (Object integer : jObject.getJSONArray("init").toList()) {
+            myPq.enqueue((Integer) integer);
+        }
+        assertThat(jObject.getBoolean("contains"), equalTo(myPq.contains(jObject.get("object"))));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
             "{\"init\":[4,6,9,10,8,13,17,12,14,21,16,3],\"expect\":[3,4,6,8,9,10,12,13,14,16,17,21]}",
             "{\"init\":[8,7,6,5,4,3,2,1],\"expect\":[1,2,3,4,5,6,7,8]}",
     })
