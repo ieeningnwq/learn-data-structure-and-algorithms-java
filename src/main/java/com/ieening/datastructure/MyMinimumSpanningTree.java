@@ -1,5 +1,7 @@
 package com.ieening.datastructure;
 
+import java.util.Arrays;
+
 import com.ieening.datastructure.MyEdgeWeightedGraph.Edge;
 
 public class MyMinimumSpanningTree {
@@ -7,6 +9,9 @@ public class MyMinimumSpanningTree {
         Prim, LazyPrim, Kruskal, Boruvka
     }
 
+    /**
+     * 即时 Prim 算法中优先队列维护的横切边，其中有不在树中顶点以及该顶点到树的最小权重值
+     */
     private static class VertexToMinimumSpanningTreeLeastWeight
             implements Comparable<VertexToMinimumSpanningTreeLeastWeight> {
 
@@ -83,6 +88,15 @@ public class MyMinimumSpanningTree {
             for (Edge edge : this.mst) {
                 weight += edge.weight();
             }
+        } else if (AlgorithmType.Kruskal == algorithmType) {
+            Edge[] edges = new Edge[graph.V()]; // 按照权重顺序排序的加权无向边
+            int i = 0;
+            for (Edge edge : graph.edges())
+                edges[i] = edge;
+            Arrays.sort(edges);
+
+            // 贪心算法
+            
         }
 
     }
@@ -98,6 +112,16 @@ public class MyMinimumSpanningTree {
         }
     }
 
+    /**
+     * 即时 Prim 算法实现，标记顶点 v，并将和 v 连接且另一端点未被标记权重最小的顶点和权重值保存至优先队列中
+     * 
+     * @param graph
+     * @param vLeastWeight
+     * @param pq
+     * @param edgeTo
+     * @param distTo
+     * @param marked
+     */
     private void scan(MyEdgeWeightedGraph graph, VertexToMinimumSpanningTreeLeastWeight vLeastWeight,
             MyPriorityQueue<VertexToMinimumSpanningTreeLeastWeight> pq, Edge[] edgeTo, double[] distTo,
             boolean[] marked) {
@@ -143,7 +167,7 @@ public class MyMinimumSpanningTree {
     }
 
     /**
-     * 标记顶点 v，并将所有和 v 连接且另一端点未被标记的边加入优先级队列
+     * 延时 Prim 实现，标记顶点 v，并将所有和 v 连接且另一端点未被标记的边加入优先级队列
      * 
      * @param graph 加权无向图
      * @param v     顶点
