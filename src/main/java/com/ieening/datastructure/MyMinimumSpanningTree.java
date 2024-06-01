@@ -2,6 +2,7 @@ package com.ieening.datastructure;
 
 import java.util.Arrays;
 
+import com.ieening.algorithms.MyWeightedQuickUnionWithPathCompressionUnionFind;
 import com.ieening.datastructure.MyEdgeWeightedGraph.Edge;
 
 public class MyMinimumSpanningTree {
@@ -89,16 +90,69 @@ public class MyMinimumSpanningTree {
                 weight += edge.weight();
             }
         } else if (AlgorithmType.Kruskal == algorithmType) {
-            Edge[] edges = new Edge[graph.V()]; // 按照权重顺序排序的加权无向边
-            int i = 0;
-            for (Edge edge : graph.edges())
-                edges[i] = edge;
-            Arrays.sort(edges);
-
-            // 贪心算法
-            
+            this.mst = kruskal(graph);
+        } else if (AlgorithmType.Boruvka == algorithmType) {
+            this.mst = boruvka(graph);
         }
+    }
 
+    private MyQueue<Edge> kruskal(MyEdgeWeightedGraph graph) {
+        Edge[] edges = new Edge[graph.E()]; // 按照权重顺序排序的加权无向边
+        int t = 0;
+        for (Edge edge : graph.edges())
+            edges[t++] = edge;
+        Arrays.sort(edges);
+
+        MyQueue<Edge> mst = new MyLinkedListQueue<>();
+
+        // 贪心算法
+        MyWeightedQuickUnionWithPathCompressionUnionFind uf = new MyWeightedQuickUnionWithPathCompressionUnionFind(
+                graph.V());
+        for (int i = 0; i < graph.E() && mst.size() < graph.V() - 1; i++) {
+            Edge edge = edges[i];
+            int v = edge.either();
+            int w = edge.other(v);
+            if (!uf.connected(v, w)) {
+                uf.union(v, w);
+                mst.enqueue(edge);
+                weight += edge.weight();
+            }
+        }
+        return mst;
+    }
+
+    private MyList<Edge> boruvka(MyEdgeWeightedGraph graph) {
+        MyList<Edge> mst = new MyLinkedList<>();
+
+        MyWeightedQuickUnionWithPathCompressionUnionFind uf = new MyWeightedQuickUnionWithPathCompressionUnionFind(
+                graph.V());
+        // 循环最多 lgV 次或者已找到 V-1 条边
+        for (int t = 1; t < graph.V() && mst.size() < graph.V() - 1; t = t + t) {
+            Edge[] closest = new Edge[graph.V()];
+            for (Edge edge : graph.edges()) {
+                int v = edge.either(), w = edge.other(v);
+                int i = uf.find(v), j = uf.find(w);
+                if (i == j)
+                    continue;
+                if (closest[i] == null || edge.compareTo(closest[i]) < 0)
+                    closest[i] = edge;
+                if (closest[j] == null || edge.compareTo(closest[j]) < 0)
+                    closest[j] = edge;
+            }
+
+            for (int i = 0; i < graph.V(); i++) {
+                Edge edge = closest[i];
+                if (edge != null) {
+                    int v = edge.either(), w = edge.other(v);
+                    if (!uf.connected(v, w)) {
+                        mst.add(edge);
+                        weight += edge.weight();
+                        uf.union(v, w);
+                    }
+                }
+            }
+        }
+        return mst;
     }
 
     private void prim(MyEdgeWeightedGraph graph, int s, MyPriorityQueue<VertexToMinimumSpanningTreeLeastWeight> pq,

@@ -58,4 +58,30 @@ public class MyMinimumSpanningTreeTest {
         mst = new MyMinimumSpanningTree(graph, MyMinimumSpanningTree.AlgorithmType.Prim);
         assertEquals(1.81, mst.weight(), 1.0E-12);
     }
+
+    @Test
+    public void testEdgesKruskal() {
+        mst = new MyMinimumSpanningTree(graph, MyMinimumSpanningTree.AlgorithmType.Kruskal);
+        assertThat("[0-7 0.16000, 2-3 0.17000, 1-7 0.19000, 0-2 0.26000, 5-7 0.28000, 4-5 0.35000, 6-2 0.40000]",
+                equalTo(Arrays.toString(StreamSupport.stream(mst.edges().spliterator(), false).toArray())));
+    }
+
+    @Test
+    public void testWeightKruskal() {
+        mst = new MyMinimumSpanningTree(graph, MyMinimumSpanningTree.AlgorithmType.Kruskal);
+        assertEquals(1.81, mst.weight(), 1.0E-12);
+    }
+
+    @Test
+    public void testEdgesBoruvka() {
+        mst = new MyMinimumSpanningTree(graph, MyMinimumSpanningTree.AlgorithmType.Boruvka);
+        assertThat("[0-7 0.16000, 1-7 0.19000, 2-3 0.17000, 4-5 0.35000, 5-7 0.28000, 6-2 0.40000, 0-2 0.26000]",
+                equalTo(Arrays.toString(StreamSupport.stream(mst.edges().spliterator(), false).toArray())));
+    }
+
+    @Test
+    public void testWeightBoruvka() {
+        mst = new MyMinimumSpanningTree(graph, MyMinimumSpanningTree.AlgorithmType.Boruvka);
+        assertEquals(1.81, mst.weight(), 1.0E-12);
+    }
 }
