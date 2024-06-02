@@ -82,7 +82,7 @@ public class MyEdgeWeightedGraphTest {
             JSONArray adj = jObject.getJSONArray("adj");
             assertThat(adj.toList().toArray(),
                     equalTo(StreamSupport.stream(mEdgeWeightGraph.adj(vertex).spliterator(), false)
-                            .mapToInt((MyEdgeWeightedGraph.Edge x) -> x.other(vertex)).toArray()));
+                            .mapToInt((MyEdgeWeightedGraph.MyEdge x) -> x.other(vertex)).toArray()));
         } catch (Exception e) {
             assertThrows(IllegalArgumentException.class, () -> mEdgeWeightGraph.adj(vertex));
         }

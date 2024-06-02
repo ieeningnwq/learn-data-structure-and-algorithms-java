@@ -11,7 +11,7 @@ public class MyEdgeWeightedGraph {
     // MARK:Fields
     private static final String NEWLINE = System.lineSeparator();
 
-    public static class Edge implements Comparable<Edge> {
+    public static class MyEdge implements Comparable<MyEdge> {
         private final int v;
         private final int w;
         private final double weight;
@@ -23,7 +23,7 @@ public class MyEdgeWeightedGraph {
          * @param w      边的另一个顶点
          * @param weight 边的权重
          */
-        public Edge(int v, int w, double weight) {
+        public MyEdge(int v, int w, double weight) {
             if (v < 0 || w < 0)
                 throw new IllegalArgumentException("vertex index must be a non-negative number");
             if (Double.isNaN(weight))
@@ -74,14 +74,14 @@ public class MyEdgeWeightedGraph {
         }
 
         @Override
-        public int compareTo(Edge that) {
+        public int compareTo(MyEdge that) {
             return Double.compare(weight, that.weight);
         }
     }
 
     private final int V; // 无向权重图的顶点数量
     private int E; // 图边的数量
-    private final MyList<Edge>[] adj; // 邻接表
+    private final MyList<MyEdge>[] adj; // 邻接表
 
     // MARK:Constructors
 
@@ -97,7 +97,7 @@ public class MyEdgeWeightedGraph {
             throw new IllegalArgumentException("number of vertexes must be non-negative");
         this.V = V;
         this.E = 0;
-        adj = (MyList<Edge>[]) new MyList[V];
+        adj = (MyList<MyEdge>[]) new MyList[V];
         for (int v = 0; v < V; v++)
             adj[v] = new MyArrayList<>();
 
@@ -121,7 +121,7 @@ public class MyEdgeWeightedGraph {
             if (V < 0)
                 throw new IllegalArgumentException(
                         "number of vertices must be non-negative, " + V + " is less than zero");
-            adj = (MyList<Edge>[]) new MyList[V];
+            adj = (MyList<MyEdge>[]) new MyList[V];
             for (int v = 0; v < V; v++)
                 adj[v] = new MyArrayList<>();
             int E = in.nextInt();
@@ -133,7 +133,7 @@ public class MyEdgeWeightedGraph {
                 int w = in.nextInt();
                 validateVertex(w);
                 double weight = in.nextDouble();
-                addEdge(new Edge(v, w, weight));
+                addEdge(new MyEdge(v, w, weight));
             }
         } catch (Exception e) {
             throw new IllegalArgumentException(
@@ -141,7 +141,7 @@ public class MyEdgeWeightedGraph {
         }
     }
 
-    private void addEdge(Edge edge) {
+    private void addEdge(MyEdge edge) {
         int v = edge.either();
         int w = edge.other(v);
         validateVertex(v);
@@ -169,7 +169,7 @@ public class MyEdgeWeightedGraph {
         return adj[v].size();
     }
 
-    public Iterable<Edge> adj(int v) {
+    public Iterable<MyEdge> adj(int v) {
         validateVertex(v);
         return adj[v];
     }
@@ -179,11 +179,11 @@ public class MyEdgeWeightedGraph {
      * 
      * @return 图所有边
      */
-    public Iterable<Edge> edges() {
-        MyList<Edge> edgeList = new MyArrayList<>();
+    public Iterable<MyEdge> edges() {
+        MyList<MyEdge> edgeList = new MyArrayList<>();
         for (int v = 0; v < V; v++) {
             int selfLoops = 0;
-            for (Edge edge : adj[v]) {
+            for (MyEdge edge : adj[v]) {
                 if (edge.other(v) > v) {
                     edgeList.add(edge);
                 } else if (edge.other(v) == v) {
@@ -204,7 +204,7 @@ public class MyEdgeWeightedGraph {
         s.append(V + " " + E + NEWLINE);
         for (int v = 0; v < V; v++) {
             s.append(v + ": ");
-            for (Edge edge : adj[v]) 
+            for (MyEdge edge : adj[v]) 
                 s.append(edge + " ; ");
             s.append(NEWLINE);
         }
@@ -220,7 +220,7 @@ public class MyEdgeWeightedGraph {
             graph.addNode(String.valueOf(v)).setAttribute("ui.label", String.valueOf(v));
         }
         // 加入边
-        for (Edge edge : edges()) {
+        for (MyEdge edge : edges()) {
             int v = edge.either();
             int w = edge.other(v);
             graph.addEdge(edge.toString(), v, w).setAttribute("ui.label", String.valueOf(edge.weight()));

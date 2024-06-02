@@ -3,7 +3,7 @@ package com.ieening.datastructure;
 import java.util.Arrays;
 
 import com.ieening.algorithms.MyWeightedQuickUnionWithPathCompressionUnionFind;
-import com.ieening.datastructure.MyEdgeWeightedGraph.Edge;
+import com.ieening.datastructure.MyEdgeWeightedGraph.MyEdge;
 
 public class MyMinimumSpanningTree {
     public static enum AlgorithmType {
@@ -56,12 +56,12 @@ public class MyMinimumSpanningTree {
     }
 
     private double weight; // 最小生成树总权重
-    private Iterable<MyEdgeWeightedGraph.Edge> mst; // 最小生成树边
+    private Iterable<MyEdgeWeightedGraph.MyEdge> mst; // 最小生成树边
 
     public MyMinimumSpanningTree(MyEdgeWeightedGraph graph, AlgorithmType algorithmType) {
         if (AlgorithmType.LazyPrim == algorithmType) {
-            MyQueue<MyEdgeWeightedGraph.Edge> mst = new MyLinkedListQueue<>();
-            MyPriorityQueue<MyEdgeWeightedGraph.Edge> pq = new MyPriorityQueue<>(); // 横切边
+            MyQueue<MyEdgeWeightedGraph.MyEdge> mst = new MyLinkedListQueue<>();
+            MyPriorityQueue<MyEdgeWeightedGraph.MyEdge> pq = new MyPriorityQueue<>(); // 横切边
             boolean[] marked = new boolean[graph.V()]; // marked[v]：顶点 v 在最小生成树中
             for (int v = 0; v < graph.V(); v++) {
                 if (!marked[v])
@@ -69,7 +69,7 @@ public class MyMinimumSpanningTree {
             }
             this.mst = mst;
         } else if (AlgorithmType.Prim == algorithmType) {
-            Edge[] edgeTo = new Edge[graph.V()]; // edgeTo[v]：由树中顶点到非树中顶点 v 权重最小边
+            MyEdge[] edgeTo = new MyEdge[graph.V()]; // edgeTo[v]：由树中顶点到非树中顶点 v 权重最小边
             double[] distTo = new double[graph.V()]; // distTo[v]：由树中顶点到非树中顶点 v 权重最小边的权重
             boolean[] marked = new boolean[graph.V()]; // marked[v]：顶点 v 在最小生成树中
             MyPriorityQueue<VertexToMinimumSpanningTreeLeastWeight> pq = new MyPriorityQueue<>(); // 横切边
@@ -79,14 +79,14 @@ public class MyMinimumSpanningTree {
                 if (!marked[v])
                     prim(graph, v, pq, edgeTo, distTo, marked);
             }
-            MyQueue<MyEdgeWeightedGraph.Edge> mst = new MyLinkedListQueue<>();
+            MyQueue<MyEdgeWeightedGraph.MyEdge> mst = new MyLinkedListQueue<>();
             for (int v = 0; v < edgeTo.length; v++) {
-                Edge edge = edgeTo[v];
+                MyEdge edge = edgeTo[v];
                 if (edge != null)
                     mst.enqueue(edge);
             }
             this.mst = mst;
-            for (Edge edge : this.mst) {
+            for (MyEdge edge : this.mst) {
                 weight += edge.weight();
             }
         } else if (AlgorithmType.Kruskal == algorithmType) {
@@ -96,20 +96,20 @@ public class MyMinimumSpanningTree {
         }
     }
 
-    private MyQueue<Edge> kruskal(MyEdgeWeightedGraph graph) {
-        Edge[] edges = new Edge[graph.E()]; // 按照权重顺序排序的加权无向边
+    private MyQueue<MyEdge> kruskal(MyEdgeWeightedGraph graph) {
+        MyEdge[] edges = new MyEdge[graph.E()]; // 按照权重顺序排序的加权无向边
         int t = 0;
-        for (Edge edge : graph.edges())
+        for (MyEdge edge : graph.edges())
             edges[t++] = edge;
         Arrays.sort(edges);
 
-        MyQueue<Edge> mst = new MyLinkedListQueue<>();
+        MyQueue<MyEdge> mst = new MyLinkedListQueue<>();
 
         // 贪心算法
         MyWeightedQuickUnionWithPathCompressionUnionFind uf = new MyWeightedQuickUnionWithPathCompressionUnionFind(
                 graph.V());
         for (int i = 0; i < graph.E() && mst.size() < graph.V() - 1; i++) {
-            Edge edge = edges[i];
+            MyEdge edge = edges[i];
             int v = edge.either();
             int w = edge.other(v);
             if (!uf.connected(v, w)) {
@@ -121,15 +121,15 @@ public class MyMinimumSpanningTree {
         return mst;
     }
 
-    private MyList<Edge> boruvka(MyEdgeWeightedGraph graph) {
-        MyList<Edge> mst = new MyLinkedList<>();
+    private MyList<MyEdge> boruvka(MyEdgeWeightedGraph graph) {
+        MyList<MyEdge> mst = new MyLinkedList<>();
 
         MyWeightedQuickUnionWithPathCompressionUnionFind uf = new MyWeightedQuickUnionWithPathCompressionUnionFind(
                 graph.V());
         // 循环最多 lgV 次或者已找到 V-1 条边
         for (int t = 1; t < graph.V() && mst.size() < graph.V() - 1; t = t + t) {
-            Edge[] closest = new Edge[graph.V()];
-            for (Edge edge : graph.edges()) {
+            MyEdge[] closest = new MyEdge[graph.V()];
+            for (MyEdge edge : graph.edges()) {
                 int v = edge.either(), w = edge.other(v);
                 int i = uf.find(v), j = uf.find(w);
                 if (i == j)
@@ -141,7 +141,7 @@ public class MyMinimumSpanningTree {
             }
 
             for (int i = 0; i < graph.V(); i++) {
-                Edge edge = closest[i];
+                MyEdge edge = closest[i];
                 if (edge != null) {
                     int v = edge.either(), w = edge.other(v);
                     if (!uf.connected(v, w)) {
@@ -156,7 +156,7 @@ public class MyMinimumSpanningTree {
     }
 
     private void prim(MyEdgeWeightedGraph graph, int s, MyPriorityQueue<VertexToMinimumSpanningTreeLeastWeight> pq,
-            Edge[] edgeTo,
+            MyEdge[] edgeTo,
             double[] distTo, boolean[] marked) {
         distTo[s] = 0;
         pq.enqueue(new VertexToMinimumSpanningTreeLeastWeight(s, distTo[s]));
@@ -177,10 +177,10 @@ public class MyMinimumSpanningTree {
      * @param marked
      */
     private void scan(MyEdgeWeightedGraph graph, VertexToMinimumSpanningTreeLeastWeight vLeastWeight,
-            MyPriorityQueue<VertexToMinimumSpanningTreeLeastWeight> pq, Edge[] edgeTo, double[] distTo,
+            MyPriorityQueue<VertexToMinimumSpanningTreeLeastWeight> pq, MyEdge[] edgeTo, double[] distTo,
             boolean[] marked) {
         marked[vLeastWeight.getVertex()] = true;
-        for (Edge edge : graph.adj(vLeastWeight.getVertex())) {
+        for (MyEdge edge : graph.adj(vLeastWeight.getVertex())) {
             int w = edge.other(vLeastWeight.getVertex());
             if (marked[w])
                 continue;
@@ -203,11 +203,11 @@ public class MyMinimumSpanningTree {
      * @param graph
      * @param s
      */
-    private void lazyPrim(MyEdgeWeightedGraph graph, int s, MyQueue<MyEdgeWeightedGraph.Edge> mst,
-            MyPriorityQueue<MyEdgeWeightedGraph.Edge> pq, boolean[] marked) {
+    private void lazyPrim(MyEdgeWeightedGraph graph, int s, MyQueue<MyEdgeWeightedGraph.MyEdge> mst,
+            MyPriorityQueue<MyEdgeWeightedGraph.MyEdge> pq, boolean[] marked) {
         scan(graph, s, pq, marked);
         while (!pq.isEmpty()) {
-            Edge e = pq.dequeue(); // 拿到优先级队列中权重最小的边
+            MyEdge e = pq.dequeue(); // 拿到优先级队列中权重最小的边
             int v = e.either(), w = e.other(v);// 边的两个顶点
             if (marked[v] && marked[w])
                 continue; // 如果顶点都已加入，说明是失效边，跳过
@@ -226,17 +226,17 @@ public class MyMinimumSpanningTree {
      * @param graph 加权无向图
      * @param v     顶点
      */
-    private void scan(MyEdgeWeightedGraph graph, int v, MyPriorityQueue<MyEdgeWeightedGraph.Edge> pq,
+    private void scan(MyEdgeWeightedGraph graph, int v, MyPriorityQueue<MyEdgeWeightedGraph.MyEdge> pq,
             boolean[] marked) {
         assert !marked[v];
         marked[v] = true;
-        for (MyEdgeWeightedGraph.Edge e : graph.adj(v)) {
+        for (MyEdgeWeightedGraph.MyEdge e : graph.adj(v)) {
             if (!marked[e.other(v)])
                 pq.enqueue(e);
         }
     }
 
-    public Iterable<MyEdgeWeightedGraph.Edge> edges() {
+    public Iterable<MyEdgeWeightedGraph.MyEdge> edges() {
         return mst;
     }
 
