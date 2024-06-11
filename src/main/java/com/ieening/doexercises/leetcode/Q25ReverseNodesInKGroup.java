@@ -1,24 +1,6 @@
 package com.ieening.doexercises.leetcode;
 
-/**
- * Definition for singly-linked list.
- */
-class ListNode {
-    int val;
-    ListNode next;
-
-    ListNode() {
-    }
-
-    ListNode(int val) {
-        this.val = val;
-    }
-
-    ListNode(int val, ListNode next) {
-        this.val = val;
-        this.next = next;
-    }
-}
+import com.ieening.doexercises.leetcode.predefine.ListNode;
 
 /**
  * Q25ReverseNodesInKGroup
