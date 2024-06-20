@@ -1,16 +1,12 @@
 package com.ieening.doexercises.leetcode;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class Q15ThreeSum {
     public List<List<Integer>> threeSum(int[] nums) {
         // 结果列表
         List<List<Integer>> result = new LinkedList<>();
-        Map<Integer,Integer> lessThanZero = new HashMap<>();
         boolean addZero=false;
         List<Integer> greaterThanZero = new LinkedList<>();
         for (int num : nums) {
